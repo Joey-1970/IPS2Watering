@@ -9,6 +9,7 @@
             parent::Create();
             $this->RegisterPropertyBoolean("Open", false);
             $this->RegisterPropertyInteger("ActuatorID", 0);
+            $this->RegisterPropertyInteger("SensorID", 0);
         }
  
         // Überschreibt die intere IPS_ApplyChanges($id) Funktion
