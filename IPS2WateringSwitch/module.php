@@ -22,9 +22,7 @@
         public function ApplyChanges() {
             	// Diese Zeile nicht löschen
             	parent::ApplyChanges();
-		$this->RegisterVariableBoolean("Automatic", "Automatik", "~Switch", 10);
-		$this->EnableAction("Automatic");
-            	$this->RegisterVariableBoolean("State", "Status", "~Switch", 20);
+		
 		
 		$this->RegisterEvent("Wochenplan", "IPS2Watering_Event_".$this->InstanceID, 2, $this->InstanceID, 30);
 		// Anlegen der Daten für den Wochenplan
@@ -35,7 +33,7 @@
 		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 0, "Freigabe", 0x40FF00, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");	
 		
 		
-		If ($this->ReadPropertyBoolean("Automatic") == true) {
+		If (GetValueBoolean($this->GetIDForIdent("Automatic")) == true) {
 			$this->DisableAction("State");
 		}
 		else {
