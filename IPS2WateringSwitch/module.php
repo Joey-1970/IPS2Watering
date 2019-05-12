@@ -10,6 +10,8 @@
             	$this->RegisterPropertyBoolean("Open", false);
             	$this->RegisterPropertyInteger("ActuatorID", 0);
             	$this->RegisterPropertyInteger("SensorID", 0);
+		$this->RegisterPropertyInteger("MaxWatering", 30);
+            	$this->RegisterPropertyInteger("MinWaitTime", 180);
             
             	$this->RegisterVariableBoolean("Automatic", "Automatik", "~Switch", 10);
 		$this->EnableAction("Automatic");
@@ -26,9 +28,7 @@
 			IPS_SetEventScheduleGroup($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), $i, pow(2, $i));
 		}
 		
-		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 0, "An", 0x40FF00, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");
-		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 1, "Aus", 0xFF0040, "IPS2Watering_SetState(\$_IPS['TARGET'], 0);");
-	
+		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 0, "Freigabe", 0x40FF00, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");	
 		
 		
 		If ($this->ReadPropertyBoolean("Automatic") == true) {
@@ -48,23 +48,28 @@
  
         public function GetConfigurationForm() 
         { 
-            $arrayStatus = array(); 
-            $arrayStatus[] = array("code" => 101, "icon" => "inactive", "caption" => "Instanz wird erstellt"); 
-            $arrayStatus[] = array("code" => 102, "icon" => "active", "caption" => "Instanz ist aktiv");
-            $arrayStatus[] = array("code" => 104, "icon" => "inactive", "caption" => "Instanz ist inaktiv");
+            	$arrayStatus = array(); 
+            	$arrayStatus[] = array("code" => 101, "icon" => "inactive", "caption" => "Instanz wird erstellt"); 
+            	$arrayStatus[] = array("code" => 102, "icon" => "active", "caption" => "Instanz ist aktiv");
+            	$arrayStatus[] = array("code" => 104, "icon" => "inactive", "caption" => "Instanz ist inaktiv");
 
-            $arrayElements = array(); 
-            $arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
-            $arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-            $arrayElements[] = array("type" => "Label", "label" => "Ventil-Aktor-Variable (Boolean)");
-            $arrayElements[] = array("type" => "SelectVariable", "name" => "ActuatorID", "caption" => "Aktor"); 
-             $arrayElements[] = array("type" => "Label", "label" => "Bodenfeuchtigkeits-Sensor-Variable (Float)");
-            $arrayElements[] = array("type" => "SelectVariable", "name" => "SensorID", "caption" => "Aktor"); 
-            $arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________"); 
-            $arrayActions = array();
-            $arrayActions[] = array("type" => "Label", "label" => "Diese Funktionen stehen erst nach Eingabe und Übernahme der erforderlichen Daten zur Verfügung!");
+            	$arrayElements = array(); 
+            	$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
+            	$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+            	$arrayElements[] = array("type" => "Label", "label" => "Ventil-Aktor-Variable (Boolean)");
+            	$arrayElements[] = array("type" => "SelectVariable", "name" => "ActuatorID", "caption" => "Aktor"); 
+            	$arrayElements[] = array("type" => "Label", "label" => "Bodenfeuchtigkeits-Sensor-Variable (Float)");
+            	$arrayElements[] = array("type" => "SelectVariable", "name" => "SensorID", "caption" => "Aktor"); 
+            	$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________"); 
+            	$arrayElements[] = array("type" => "Label", "label" => "Maximale Bewässerungzeit im Automatik-Betrieb in Minuten:");
+	    	$arrayElements[] = array("type" => "NumberSpinner", "name" => "MaxWatering",  "caption" => "Dauer (min)");
+		$arrayElements[] = array("type" => "Label", "label" => "Minimale Pause zwischen Bewässerungphasen im Automatik-Betrieb in Minuten:");
+	    	$arrayElements[] = array("type" => "NumberSpinner", "name" => "MinWaitTime",  "caption" => "Dauer (min)");
+		
+		$arrayActions = array();
+            	$arrayActions[] = array("type" => "Label", "label" => "Diese Funktionen stehen erst nach Eingabe und Übernahme der erforderlichen Daten zur Verfügung!");
 
-            return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements, "actions" => $arrayActions)); 		 
+            	return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements, "actions" => $arrayActions)); 		 
         }  
 	
 	public function SetState()
@@ -72,11 +77,7 @@
 		
 	}
 	 
-	private function RegisterScheduleAction($EventID, $ActionID, $Name, $Color, $Script)
-	{
-		IPS_SetEventScheduleAction($EventID, $ActionID, $Name, $Color, $Script);
-	}
-	    
+  
 	private function RegisterEvent($Name, $Ident, $Typ, $Parent, $Position)
 	{
 		$eid = @$this->GetIDForIdent($Ident);
