@@ -1,0 +1,14 @@
+{
+  "id": "{714CBCFD-9AEB-A5C0-AD0D-325555613C1C}",
+  "name": "IPS2WateringSwitch",
+  "type": 3,
+  "vendor": "JP-IPS-Modules",
+  "aliases":
+  [
+    "IPS2WateringSwitch"
+  ],
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "WateringSwitch"
+}
