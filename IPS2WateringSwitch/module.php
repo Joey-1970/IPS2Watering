@@ -10,6 +10,11 @@
             $this->RegisterPropertyBoolean("Open", false);
             $this->RegisterPropertyInteger("ActuatorID", 0);
             $this->RegisterPropertyInteger("SensorID", 0);
+            
+            $this->RegisterVariableBoolean("Automatic", "Automatik", "~Switch", 10);
+		    $this->EnableAction("Automatic");
+            $this->RegisterVariableBoolean("State", "Status", "~Switch", 20);
+		    $this->EnableAction("State");
         }
  
         // Überschreibt die intere IPS_ApplyChanges($id) Funktion
