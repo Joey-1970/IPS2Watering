@@ -18,6 +18,25 @@
             parent::ApplyChanges();
         }
  
-        
+        public function GetConfigurationForm() 
+        { 
+            $arrayStatus = array(); 
+            $arrayStatus[] = array("code" => 101, "icon" => "inactive", "caption" => "Instanz wird erstellt"); 
+            $arrayStatus[] = array("code" => 102, "icon" => "active", "caption" => "Instanz ist aktiv");
+            $arrayStatus[] = array("code" => 104, "icon" => "inactive", "caption" => "Instanz ist inaktiv");
+
+            $arrayElements = array(); 
+            $arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
+            $arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+            $arrayElements[] = array("type" => "Label", "label" => "Ventil-Aktor-Variable (Boolean)");
+            $arrayElements[] = array("type" => "SelectVariable", "name" => "ActuatorID", "caption" => "Aktor"); 
+             $arrayElements[] = array("type" => "Label", "label" => "Bodenfeuchtigkeits-Sensor-Variable (Float)");
+            $arrayElements[] = array("type" => "SelectVariable", "name" => "SensorID", "caption" => "Aktor"); 
+            $arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________"); 
+            $arrayActions = array();
+            $arrayActions[] = array("type" => "Label", "label" => "Diese Funktionen stehen erst nach Eingabe und Übernahme der erforderlichen Daten zur Verfügung!");
+
+            return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements, "actions" => $arrayActions)); 		 
+        }   
     }
 ?>
