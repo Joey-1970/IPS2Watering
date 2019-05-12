@@ -21,6 +21,16 @@
             	// Diese Zeile nicht löschen
             	parent::ApplyChanges();
 		$this->RegisterEvent("Wochenplan", "IPS2Watering_Event_".$this->InstanceID, 2, $this->InstanceID, 30);
+		// Anlegen der Daten für den Wochenplan
+		for ($i = 0; $i <= 6; $i++) {
+			IPS_SetEventScheduleGroup($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), $i, pow(2, $i));
+		}
+		
+		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 0, "An", 0x40FF00, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");
+		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 1, "Aus", 0xFF0040, "IPS2Watering_SetState(\$_IPS['TARGET'], 0);");
+	
+		
+		
 		If ($this->ReadPropertyBoolean("Automatic") == true) {
 			$this->EnDisableAction("State");
 		}
@@ -56,7 +66,16 @@
 
             return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements, "actions" => $arrayActions)); 		 
         }  
-	    
+	
+	public function SetState()
+	{
+		
+	}
+	 
+	private function RegisterScheduleAction($EventID, $ActionID, $Name, $Color, $Script)
+	{
+		IPS_SetEventScheduleAction($EventID, $ActionID, $Name, $Color, $Script);
+	}
 	    
 	private function RegisterEvent($Name, $Ident, $Typ, $Parent, $Position)
 	{
