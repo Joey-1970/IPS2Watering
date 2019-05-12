@@ -25,6 +25,7 @@
 		$this->RegisterVariableBoolean("Automatic", "Automatik", "~Switch", 10);
 		$this->EnableAction("Automatic");
             	$this->RegisterVariableBoolean("State", "Status", "~Switch", 20);
+		
 		$this->RegisterEvent("Wochenplan", "IPS2Watering_Event_".$this->InstanceID, 2, $this->InstanceID, 30);
 		// Anlegen der Daten für den Wochenplan
 		for ($i = 0; $i <= 6; $i++) {
@@ -35,7 +36,7 @@
 		
 		
 		If ($this->ReadPropertyBoolean("Automatic") == true) {
-			$this->EnDisableAction("State");
+			$this->DisableAction("State");
 		}
 		else {
 			$this->EnableAction("State");
