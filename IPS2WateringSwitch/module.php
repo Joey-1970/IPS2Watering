@@ -59,6 +59,11 @@
 		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 0, "Freigabe", 0x40FF00, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");	
 		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 1, "Sperrzeit", 0xFF0040, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");	
 
+		// Registrierung für die Änderung des Aktor-Status
+		If ($this->ReadPropertyInteger("ActuatorID") > 0) {
+			$this->RegisterMessage($this->ReadPropertyInteger("ActuatorID"), 10603);
+		}
+		
 		
 		If (GetValueBoolean($this->GetIDForIdent("Automatic")) == true) {
 			$this->DisableAction("State");
@@ -103,6 +108,20 @@
 	            throw new Exception("Invalid Ident");
 	    	}
 	}    
+	
+	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
+    	{
+		switch ($Message) {
+			case 10603:
+				// Änderung der Vorlauf-Temperatur
+				If ($SenderID == $this->ReadPropertyInteger("ActuatorID")) {
+					$this->SendDebug("ReceiveData", "Ausloeser Aenderung Aktor-Status", 0);
+					
+				}
+				
+				break;
+		}
+    	}        
 	    
 	public function SetState()
 	{
