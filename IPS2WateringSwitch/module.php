@@ -57,7 +57,7 @@
 		}
 		
 		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 0, "Freigabe", 0x40FF00, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");	
-		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 0, "Sperrzeit", 0xFF0040, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");	
+		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 1, "Sperrzeit", 0xFF0040, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");	
 
 		
 		If (GetValueBoolean($this->GetIDForIdent("Automatic")) == true) {
@@ -88,7 +88,7 @@
 				
 			case "State":
 			    If ($this->ReadPropertyBoolean("Open") == true) {
-				    If (GetValueBoolean($this->GetIDForIdent("Automatic")) == true) {
+				    If (GetValueBoolean($this->GetIDForIdent("Automatic")) == false) {
 					    SetValueBoolean($this->GetIDForIdent("State"),  $Value);
 				    }
 			    }
