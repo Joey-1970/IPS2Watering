@@ -80,19 +80,19 @@
 	public function RequestAction($Ident, $Value) 
 	{
   		switch($Ident) {
-	        case "Automatic":
-	            If ($this->ReadPropertyBoolean("Open") == true) {
-			    SetValueBoolean($this->GetIDForIdent("Automatic"),  $Value);
-		    }
-	            break;
-		switch($Ident) {
-	        case "State":
-	            If ($this->ReadPropertyBoolean("Open") == true) {
-			    If (GetValueBoolean($this->GetIDForIdent("Automatic")) == true) {
-				    SetValueBoolean($this->GetIDForIdent("State"),  $Value);
+			case "Automatic":
+			    If ($this->ReadPropertyBoolean("Open") == true) {
+				    SetValueBoolean($this->GetIDForIdent("Automatic"),  $Value);
 			    }
-		    }
-	            break;
+			    break;
+				
+			case "State":
+			    If ($this->ReadPropertyBoolean("Open") == true) {
+				    If (GetValueBoolean($this->GetIDForIdent("Automatic")) == true) {
+					    SetValueBoolean($this->GetIDForIdent("State"),  $Value);
+				    }
+			    }
+			    break;
 	        default:
 	            throw new Exception("Invalid Ident");
 	    	}
