@@ -82,7 +82,13 @@
   		switch($Ident) {
 			case "Automatic":
 			    If ($this->ReadPropertyBoolean("Open") == true) {
-				    SetValueBoolean($this->GetIDForIdent("Automatic"),  $Value);
+				   SetValueBoolean($this->GetIDForIdent("Automatic"),  $Value);
+				   If ($Value == true) {
+					$this->DisableAction("State");
+				   }
+				   else {
+					$this->EnableAction("State");
+				   }
 			    }
 			    break;
 				
