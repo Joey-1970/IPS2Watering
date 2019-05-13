@@ -17,6 +17,32 @@
 		$this->EnableAction("Automatic");
             	$this->RegisterVariableBoolean("State", "Status", "~Switch", 20);
         }
+	    
+	public function GetConfigurationForm() 
+        { 
+            	$arrayStatus = array(); 
+            	$arrayStatus[] = array("code" => 101, "icon" => "inactive", "caption" => "Instanz wird erstellt"); 
+            	$arrayStatus[] = array("code" => 102, "icon" => "active", "caption" => "Instanz ist aktiv");
+            	$arrayStatus[] = array("code" => 104, "icon" => "inactive", "caption" => "Instanz ist inaktiv");
+
+            	$arrayElements = array(); 
+            	$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
+            	$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+            	$arrayElements[] = array("type" => "Label", "label" => "Ventil-Aktor-Variable (Boolean)");
+            	$arrayElements[] = array("type" => "SelectVariable", "name" => "ActuatorID", "caption" => "Aktor"); 
+            	$arrayElements[] = array("type" => "Label", "label" => "Bodenfeuchtigkeits-Sensor-Variable (Float)");
+            	$arrayElements[] = array("type" => "SelectVariable", "name" => "SensorID", "caption" => "Aktor"); 
+            	$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________"); 
+            	$arrayElements[] = array("type" => "Label", "label" => "Maximale Bewässerungzeit im Automatik-Betrieb in Minuten:");
+	    	$arrayElements[] = array("type" => "NumberSpinner", "name" => "MaxWatering",  "caption" => "Dauer (min)");
+		$arrayElements[] = array("type" => "Label", "label" => "Minimale Pause zwischen Bewässerungphasen im Automatik-Betrieb in Minuten:");
+	    	$arrayElements[] = array("type" => "NumberSpinner", "name" => "MinWaitTime",  "caption" => "Dauer (min)");
+		
+		$arrayActions = array();
+            	$arrayActions[] = array("type" => "Label", "label" => "Diese Funktionen stehen erst nach Eingabe und Übernahme der erforderlichen Daten zur Verfügung!");
+
+            	return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements, "actions" => $arrayActions)); 		 
+        }  
  
         // Überschreibt die intere IPS_ApplyChanges($id) Funktion
         public function ApplyChanges() {
@@ -49,32 +75,27 @@
 		}
         }
  
-        public function GetConfigurationForm() 
-        { 
-            	$arrayStatus = array(); 
-            	$arrayStatus[] = array("code" => 101, "icon" => "inactive", "caption" => "Instanz wird erstellt"); 
-            	$arrayStatus[] = array("code" => 102, "icon" => "active", "caption" => "Instanz ist aktiv");
-            	$arrayStatus[] = array("code" => 104, "icon" => "inactive", "caption" => "Instanz ist inaktiv");
-
-            	$arrayElements = array(); 
-            	$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
-            	$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-            	$arrayElements[] = array("type" => "Label", "label" => "Ventil-Aktor-Variable (Boolean)");
-            	$arrayElements[] = array("type" => "SelectVariable", "name" => "ActuatorID", "caption" => "Aktor"); 
-            	$arrayElements[] = array("type" => "Label", "label" => "Bodenfeuchtigkeits-Sensor-Variable (Float)");
-            	$arrayElements[] = array("type" => "SelectVariable", "name" => "SensorID", "caption" => "Aktor"); 
-            	$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________"); 
-            	$arrayElements[] = array("type" => "Label", "label" => "Maximale Bewässerungzeit im Automatik-Betrieb in Minuten:");
-	    	$arrayElements[] = array("type" => "NumberSpinner", "name" => "MaxWatering",  "caption" => "Dauer (min)");
-		$arrayElements[] = array("type" => "Label", "label" => "Minimale Pause zwischen Bewässerungphasen im Automatik-Betrieb in Minuten:");
-	    	$arrayElements[] = array("type" => "NumberSpinner", "name" => "MinWaitTime",  "caption" => "Dauer (min)");
-		
-		$arrayActions = array();
-            	$arrayActions[] = array("type" => "Label", "label" => "Diese Funktionen stehen erst nach Eingabe und Übernahme der erforderlichen Daten zur Verfügung!");
-
-            	return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements, "actions" => $arrayActions)); 		 
-        }  
+        
 	
+	public function RequestAction($Ident, $Value) 
+	{
+  		switch($Ident) {
+	        case "Automatic":
+	            If ($this->ReadPropertyBoolean("Open") == true) {
+		    	
+		    }
+	            break;
+		switch($Ident) {
+	        case "State":
+	            If ($this->ReadPropertyBoolean("Open") == true) {
+		    	
+		    }
+	            break;
+	        default:
+	            throw new Exception("Invalid Ident");
+	    	}
+	}    
+	    
 	public function SetState()
 	{
 		
