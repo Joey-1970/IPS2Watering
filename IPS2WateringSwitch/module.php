@@ -101,6 +101,9 @@
 			    If ($this->ReadPropertyBoolean("Open") == true) {
 				    If (GetValueBoolean($this->GetIDForIdent("Automatic")) == false) {
 					    SetValueBoolean($this->GetIDForIdent("State"),  $Value);
+					    If ($this->ReadPropertyInteger("ActuatorID") > 0) {
+						    RequestAction($this->ReadPropertyInteger("ActuatorID"), $Value);
+					    }
 				    }
 			    }
 			    break;
