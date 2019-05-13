@@ -31,7 +31,8 @@
 		}
 		
 		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 0, "Freigabe", 0x40FF00, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");	
-		
+		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 0, "Sperrzeit", 0xFF0040, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");	
+
 		
 		If (GetValueBoolean($this->GetIDForIdent("Automatic")) == true) {
 			$this->DisableAction("State");
