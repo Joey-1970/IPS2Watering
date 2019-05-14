@@ -21,9 +21,9 @@
 		$this->RegisterTimer("WeekplanState", 0, 'WateringSwitch_GetWeekplanState($_IPS["TARGET"]);'); 
             
             	$this->RegisterProfileInteger("IPS2Watering.WeekplanState", "Information", "", "", 0, 2, 1);
-		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 0, "Undefiniert", "Warning", -1);
-		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 1, "Freigabe", "LockOpen", -1);
-		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 2, "Sperrzeit", "LockClosed", -1);
+		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 0, "Undefiniert", "Warning", 0xFF0040);
+		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 1, "Freigabe", "LockOpen", 0x40FF00);
+		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 2, "Sperrzeit", "LockClosed", 0xFF0040);
 		
 		$this->RegisterVariableBoolean("Automatic", "Automatik", "~Switch", 10);
 		$this->EnableAction("Automatic");
