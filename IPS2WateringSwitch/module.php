@@ -149,7 +149,7 @@
 	    
 	public function GetWeekplanState()
 	{
-		$e = IPS_GetEvent($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
+		$e = IPS_GetEvent($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID));
 		$actionID = false;
 		//Durch alle Gruppen gehen
 		foreach($e['ScheduleGroups'] as $g) {
