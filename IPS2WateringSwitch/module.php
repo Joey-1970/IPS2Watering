@@ -18,7 +18,7 @@
             	$this->RegisterPropertyInteger("SensorID", 0);
 		$this->RegisterPropertyInteger("MaxWatering", 30);
             	$this->RegisterPropertyInteger("MinWaitTime", 180);
-		$this->RegisterTimer("WeekplanState", 0, 'IPS2WateringSwitch_GetWeekplanState($_IPS["TARGET"]);'); 
+		$this->RegisterTimer("WeekplanState", 0, 'WateringSwitch_GetWeekplanState($_IPS["TARGET"]);'); 
             
             	$this->RegisterProfileInteger("IPS2Watering.WeekplanState", "Information", "", "", 0, 2, 1);
 		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 0, "Undefiniert", "Warning", -1);
