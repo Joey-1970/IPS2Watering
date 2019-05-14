@@ -1,8 +1,14 @@
 <?
     // Klassendefinition
     class IPS2WateringSwitch extends IPSModule {
- 
-       
+ 	
+       public function Destroy() 
+	{
+		//Never delete this line!
+		parent::Destroy();
+		$this->SetTimerInterval("WeekplanState", 0);
+	}
+	    
         // Überschreibt die interne IPS_Create($id) Funktion
         public function Create() {
             	// Diese Zeile nicht löschen.
@@ -12,10 +18,18 @@
             	$this->RegisterPropertyInteger("SensorID", 0);
 		$this->RegisterPropertyInteger("MaxWatering", 30);
             	$this->RegisterPropertyInteger("MinWaitTime", 180);
+		$this->RegisterTimer("WeekplanState", 0, 'IPS2WateringSwitch_GetWeekplanState($_IPS["TARGET"]);'); 
             
-            	$this->RegisterVariableBoolean("Automatic", "Automatik", "~Switch", 10);
+            	$this->RegisterProfileInteger("IPS2Watering.WeekplanState", "Information", "", "", 0, 2, 1);
+		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 0, "Undefiniert", "Warning", -1);
+		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 1, "Freigabe", "LockOpen", -1);
+		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 2, "Sperrzeit", "LockClosed", -1);
+		
+		$this->RegisterVariableBoolean("Automatic", "Automatik", "~Switch", 10);
 		$this->EnableAction("Automatic");
-            	$this->RegisterVariableBoolean("State", "Status", "~Switch", 20);
+            	$this->RegisterVariableBoolean("State", "Status", "~Switch", 20);	
+		$this->RegisterVariableInteger("WeekplanState", "Wochenplanstatus", "IPS2Watering.WeekplanState", 30);
+		
         }
 	    
 	public function GetConfigurationForm() 
@@ -73,9 +87,11 @@
 		}
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->SetTimerInterval("WeekplanState", (60 * 1000));
 			$this->SetStatus(102);
 		}
 		else {
+			$this->SetTimerInterval("WeekplanState", 0);
 			$this->SetStatus(104);
 		}
         }
@@ -131,7 +147,7 @@
 		
 	}
 	    
-	private function GetWeekplanState()
+	public function GetWeekplanState()
 	{
 		$e = IPS_GetEvent($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
 		$actionID = false;
@@ -150,9 +166,25 @@
 			break; //Sobald wir unseren Tag gefunden haben, können wir die Schleife abbrechen. Jeder Tag darf nur in genau einer Gruppe sein.
 		    }
 		}
-		Echo "Ergebnis: ".($actionID);  
+		SetValueInteger($this->GetIDForIdent("WeekplanState"),  $actionID);
 	}
-	 
+	
+	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
+	{
+	        if (!IPS_VariableProfileExists($Name))
+	        {
+	            IPS_CreateVariableProfile($Name, 1);
+	        }
+	        else
+	        {
+	            $profile = IPS_GetVariableProfile($Name);
+	            if ($profile['ProfileType'] != 1)
+	                throw new Exception("Variable profile type does not match for profile " . $Name);
+	        }
+	        IPS_SetVariableProfileIcon($Name, $Icon);
+	        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
+	        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);        
+	}
   
 	private function RegisterEvent($Name, $Ident, $Typ, $Parent, $Position)
 	{
