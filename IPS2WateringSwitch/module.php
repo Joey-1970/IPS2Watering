@@ -169,6 +169,7 @@
 			break; //Sobald wir unseren Tag gefunden haben, können wir die Schleife abbrechen. Jeder Tag darf nur in genau einer Gruppe sein.
 		    }
 		}
+		$this->SendDebug("GetWeekplanState", "Ergebnis: ".intval($actionID), 0);
 		SetValueInteger($this->GetIDForIdent("WeekplanState"),  intval($actionID));
 	}
 	
