@@ -56,8 +56,8 @@
 			IPS_SetEventScheduleGroup($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), $i, pow(2, $i));
 		}
 		
-		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 0, "Freigabe", 0x40FF00, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");	
-		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 1, "Sperrzeit", 0xFF0040, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");	
+		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 1, "Freigabe", 0x40FF00, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");	
+		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 2, "Sperrzeit", 0xFF0040, "IPS2Watering_SetState(\$_IPS['TARGET'], 1);");	
 
 		// Registrierung für die Änderung des Aktor-Status
 		If ($this->ReadPropertyInteger("ActuatorID") > 0) {
@@ -129,6 +129,28 @@
 	public function SetState()
 	{
 		
+	}
+	    
+	private function GetWeekplanState()
+	{
+		$e = IPS_GetEvent($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
+		$actionID = false;
+		//Durch alle Gruppen gehen
+		foreach($e['ScheduleGroups'] as $g) {
+		    //Überprüfen ob die Gruppe für heute zuständig ist
+		    if($g['Days'] & date("N") > 0) {
+			//Aktuellen Schaltpunkt suchen. Wir nutzen die Eigenschaft, dass die Schaltpunkte immer aufsteigend sortiert sind.
+			foreach($g['Points'] as $p) {
+			   if(date("H") * 3600 + date("i") * 60 + date("s") >= $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second']) {
+			      $actionID = $p['ActionID'];
+			   } else {
+			      break; //Sobald wir drüber sind, können wir abbrechen.
+			   }
+		       }
+			break; //Sobald wir unseren Tag gefunden haben, können wir die Schleife abbrechen. Jeder Tag darf nur in genau einer Gruppe sein.
+		    }
+		}
+		Echo "Ergebnis: ".($actionID);  
 	}
 	 
   
