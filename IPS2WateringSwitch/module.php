@@ -87,6 +87,7 @@
 		}
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
+			$this->GetWeekplanState();
 			$this->SetTimerInterval("WeekplanState", (60 * 1000));
 			$this->SetStatus(102);
 		}
@@ -149,6 +150,7 @@
 	    
 	public function GetWeekplanState()
 	{
+		$this->SendDebug("GetWeekplanState", "Wochenplan Status einlesen", 0);
 		$e = IPS_GetEvent($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID));
 		$actionID = false;
 		//Durch alle Gruppen gehen
