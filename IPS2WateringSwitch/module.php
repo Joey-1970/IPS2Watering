@@ -88,7 +88,7 @@
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->GetWeekplanState();
-			$this->SetTimerInterval("WeekplanState", (60 * 1000));
+			$this->SetTimerInterval("WeekplanState", (20 * 1000));
 			$this->SetStatus(102);
 		}
 		else {
@@ -168,7 +168,7 @@
 			break; //Sobald wir unseren Tag gefunden haben, können wir die Schleife abbrechen. Jeder Tag darf nur in genau einer Gruppe sein.
 		    }
 		}
-		SetValueInteger($this->GetIDForIdent("WeekplanState"),  $actionID);
+		SetValueInteger($this->GetIDForIdent("WeekplanState"),  intval($actionID));
 	}
 	
 	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
