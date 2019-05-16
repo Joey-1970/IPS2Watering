@@ -18,7 +18,20 @@
             	$this->RegisterPropertyInteger("SensorID", 0);
 		$this->RegisterPropertyInteger("MaxWatering", 30);
             	$this->RegisterPropertyInteger("MinWaitTime", 180);
-		$this->RegisterTimer("WeekplanState", 0, 'WateringSwitch_GetWeekplanState($_IPS["TARGET"]);'); 
+		
+		$this->RegisterEvent("Wochenplan", "IPS2Watering_Event_".$this->InstanceID, 2, $this->InstanceID, 30);
+		// Anlegen der Daten für den Wochenplan
+		for ($i = 0; $i <= 6; $i++) {
+			IPS_SetEventScheduleGroup($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), $i, pow(2, $i));
+		}
+		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 1, "Freigabe", 0x40FF00, "WateringSwitch_SetState(\$_IPS['TARGET'], 1);");	
+		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 2, "Sperrzeit", 0xFF0040, "WateringSwitch_SetState(\$_IPS['TARGET'], 1);");	
+
+		
+		$WeekplanID = this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
+		$this->RegisterTimer("WeekplanState", 0, 'WateringSwitch_GetWeekplanState($_IPS["TARGET"], $WeekplanID);'); 
+		
+		
             
             	$this->RegisterProfileInteger("IPS2Watering.WeekplanState", "Information", "", "", 0, 2, 1);
 		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 0, "Undefiniert", "Warning", 0xFF0040);
@@ -62,18 +75,7 @@
         public function ApplyChanges() {
             	// Diese Zeile nicht löschen
             	parent::ApplyChanges();
-		
-		
-		$this->RegisterEvent("Wochenplan", "IPS2Watering_Event_".$this->InstanceID, 2, $this->InstanceID, 30);
-		// Anlegen der Daten für den Wochenplan
-		for ($i = 0; $i <= 6; $i++) {
-			IPS_SetEventScheduleGroup($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), $i, pow(2, $i));
-		}
-		//IPS_SetEventScheduleGroup($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 0, 127);
-		
-		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 1, "Freigabe", 0x40FF00, "WateringSwitch_SetState(\$_IPS['TARGET'], 1);");	
-		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 2, "Sperrzeit", 0xFF0040, "WateringSwitch_SetState(\$_IPS['TARGET'], 1);");	
-
+			
 		// Registrierung für die Änderung des Aktor-Status
 		If ($this->ReadPropertyInteger("ActuatorID") > 0) {
 			$this->RegisterMessage($this->ReadPropertyInteger("ActuatorID"), 10603);
@@ -88,8 +90,9 @@
 		}
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
-			$this->GetWeekplanState();
-			$this->SetTimerInterval("WeekplanState", (10 * 1000));
+			$WeekplanID = this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
+			$this->GetWeekplanState($WeekplanID);
+			$this->SetTimerInterval("WeekplanState", (30 * 1000));
 			$this->SetStatus(102);
 		}
 		else {
@@ -147,12 +150,14 @@
 	public function SetState()
 	{
 		$this->SendDebug("SetState", "Ausloesung", 0);
+		$WeekplanID = this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
+		$this->GetWeekplanState($WeekplanID);
 	}
 	    
-	public function GetWeekplanState()
+	public function GetWeekplanState(int $WeekplanID)
 	{
 		$this->SendDebug("GetWeekplanState", "Wochenplan Status einlesen", 0);
-		$e = IPS_GetEvent($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID));
+		$e = IPS_GetEvent($WeekplanID);
 		$actionID = false;
 		//Durch alle Gruppen gehen
 		foreach($e['ScheduleGroups'] as $g) 
