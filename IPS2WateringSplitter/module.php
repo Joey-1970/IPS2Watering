@@ -183,7 +183,7 @@
 	$etp=$etp*1/$L; 
 
 	// return $etp; 
-	return number_format($etp,3) //." mm/d"; //etp; 
+	return number_format($etp,3); //." mm/d"; //etp; 
 	}     
 
 }
