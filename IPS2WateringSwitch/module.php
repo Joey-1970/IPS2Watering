@@ -89,7 +89,7 @@
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->GetWeekplanState();
-			$this->SetTimerInterval("WeekplanState", (20 * 1000));
+			$this->SetTimerInterval("WeekplanState", (10 * 1000));
 			$this->SetStatus(102);
 		}
 		else {
