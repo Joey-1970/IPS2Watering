@@ -172,7 +172,7 @@
 		$this->GetWeekplanState($WeekplanID);
 	}
 	
-	public function TimerEventGetWeekplanState(int $WeekplanID)
+	public function TimerEventGetWeekplanState()
 	{  
 		$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
 		$this->GetWeekplanState($WeekplanID);
