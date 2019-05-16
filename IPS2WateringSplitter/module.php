@@ -7,8 +7,13 @@
             	// Diese Zeile nicht löschen.
             	parent::Create();
             	$this->RegisterPropertyBoolean("Open", false);
-            	
+            	$this->RegisterPropertyInteger("TemperatureSensorID", 0);
 		
+		$this->RegisterVariableBoolean("Active", "Aktiv", "~Switch", 10);
+		$this->EnableAction("Active");
+		$this->RegisterVariableFloat("Temperature", "Temperatur", "~Temperature", 20);
+		$this->RegisterVariableFloat("MaxTemperature", "Max-Temperatur", "~Temperature", 30);
+		$this->RegisterVariableFloat("MinTemperature", "Min-Temperatur", "~Temperature", 40);
         }
 	    
 	public function GetConfigurationForm() 
@@ -20,7 +25,8 @@
             	$arrayElements = array(); 
             	$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
             	$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-            	
+            	$arrayElements[] = array("type" => "Label", "label" => "Temperatur-Sensor-Variable (Float, geloggt)");
+            	$arrayElements[] = array("type" => "SelectVariable", "name" => "TemperatureSensorID", "caption" => "Aktor"); 
 		
 		$arrayActions = array();
             	$arrayActions[] = array("type" => "Label", "label" => "Diese Funktionen stehen erst nach Eingabe und Übernahme der erforderlichen Daten zur Verfügung!");
@@ -32,6 +38,10 @@
             	// Diese Zeile nicht löschen
             	parent::ApplyChanges();
 		
+		// Registrierung für die Änderung des Aktor-Status
+		If ($this->ReadPropertyInteger("TemperatureSensorID") > 0) {
+			$this->RegisterMessage($this->ReadPropertyInteger("TemperatureSensorID"), 10603);
+		}
 	
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			
@@ -43,6 +53,33 @@
 		}
         }
  
+	public function RequestAction($Ident, $Value) 
+	{
+  		switch($Ident) {
+			case "Active":
+			    If ($this->ReadPropertyBoolean("Open") == true) {
+				  
+			    }
+			    break;
+				
+			
+	        default:
+	            throw new Exception("Invalid Ident");
+	    	}
+	}    
+	
+	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
+    	{
+		switch ($Message) {
+			case 10603:
+				// Änderung der Vorlauf-Temperatur
+				If ($SenderID == $this->ReadPropertyInteger("TemperatureSensorID")) {
+					$this->SendDebug("MessageSink", "Ausloeser Aenderung Temperatur-Status", 0);
+					
+				}
+			
+		}
+    	} 
 	    
 	private function PenmanMonteith ($temp,$tmax,$tmin,$relfeu,$luftdruck,$unixzeit,$breite,$n,$albedo,$zm,$v,$rsc,$LAI,$effWH) 
 	{ 
