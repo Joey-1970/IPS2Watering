@@ -79,9 +79,9 @@
 		
 		// Registrierung für die Änderung des Wochenplans
 		$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
-		$this->RegisterMessage($this->ReadPropertyInteger("$WeekplanID"), 10821);
-		$this->RegisterMessage($this->ReadPropertyInteger("$WeekplanID"), 10822);
-		$this->RegisterMessage($this->ReadPropertyInteger("$WeekplanID"), 10823);
+		$this->RegisterMessage($WeekplanID, 10821);
+		$this->RegisterMessage($WeekplanID, 10822);
+		$this->RegisterMessage($WeekplanID, 10823);
 		
 		
 		If (GetValueBoolean($this->GetIDForIdent("Automatic")) == true) {
