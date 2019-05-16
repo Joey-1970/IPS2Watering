@@ -246,5 +246,5 @@
 		    	IPS_SetEventActive($EventID, true);  
 		}
 	}  
-    }
+}
 ?>
