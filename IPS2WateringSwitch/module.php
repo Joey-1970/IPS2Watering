@@ -141,24 +141,24 @@
 			case 10603:
 				// Änderung der Vorlauf-Temperatur
 				If ($SenderID == $this->ReadPropertyInteger("ActuatorID")) {
-					$this->SendDebug("ReceiveData", "Ausloeser Aenderung Aktor-Status", 0);
+					$this->SendDebug("MessageSink", "Ausloeser Aenderung Aktor-Status", 0);
 					
 				}
 			case 10821:
 				// Änderung des Wochenplans
-				$this->SendDebug("ReceiveData", "Ausloeser Aenderung Wochenplan", 0);
+				$this->SendDebug("MessageSink", "Ausloeser Aenderung Wochenplan", 0);
 				$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
 				$this->GetWeekplanState($WeekplanID);
 				break;
 			case 10822:
 				// Änderung des Wochenplans
-				$this->SendDebug("ReceiveData", "Ausloeser Aenderung Wochenplan", 0);
+				$this->SendDebug("MessageSink", "Ausloeser Aenderung Wochenplan", 0);
 				$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
 				$this->GetWeekplanState($WeekplanID);
 				break;
 			case 10823:
 				// Änderung des Wochenplans
-				$this->SendDebug("ReceiveData", "Ausloeser Aenderung Wochenplan", 0);
+				$this->SendDebug("MessageSink", "Ausloeser Aenderung Wochenplan", 0);
 				$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
 				$this->GetWeekplanState($WeekplanID);
 				break;
