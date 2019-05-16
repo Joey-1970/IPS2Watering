@@ -1,0 +1,14 @@
+{
+  "id": "{A229AF9F-E57D-A522-D69A-AFB01BB8109D}",
+  "name": "IPS2WateringSplitter",
+  "type": 2,
+  "vendor": "JP-IPS-Modules",
+  "aliases":
+  [
+    "IPS2WateringSplitter"
+  ],
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "WateringSplitter"
+}
