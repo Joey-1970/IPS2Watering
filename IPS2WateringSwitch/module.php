@@ -28,7 +28,7 @@
 		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 2, "Sperrzeit", 0xFF0040, "WateringSwitch_SetState(\$_IPS['TARGET'], 1);");	
 
 		
-		$WeekplanID = this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
+		$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
 		$this->RegisterTimer("WeekplanState", 0, 'WateringSwitch_GetWeekplanState($_IPS["TARGET"], $WeekplanID);'); 
 		
 		
@@ -90,7 +90,7 @@
 		}
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
-			$WeekplanID = this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
+			$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
 			$this->GetWeekplanState($WeekplanID);
 			$this->SetTimerInterval("WeekplanState", (30 * 1000));
 			$this->SetStatus(102);
@@ -150,7 +150,7 @@
 	public function SetState()
 	{
 		$this->SendDebug("SetState", "Ausloesung", 0);
-		$WeekplanID = this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
+		$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
 		$this->GetWeekplanState($WeekplanID);
 	}
 	    
