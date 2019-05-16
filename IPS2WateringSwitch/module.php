@@ -79,9 +79,9 @@
 		
 		// Registrierung für die Änderung des Wochenplans
 		$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
-		$this->RegisterMessage($this->ReadPropertyInteger("$WeekplanID"), 10815);
-		$this->RegisterMessage($this->ReadPropertyInteger("$WeekplanID"), 10816);
-		$this->RegisterMessage($this->ReadPropertyInteger("$WeekplanID"), 10817);
+		$this->RegisterMessage($this->ReadPropertyInteger("$WeekplanID"), 10821);
+		$this->RegisterMessage($this->ReadPropertyInteger("$WeekplanID"), 10822);
+		$this->RegisterMessage($this->ReadPropertyInteger("$WeekplanID"), 10823);
 		
 		
 		If (GetValueBoolean($this->GetIDForIdent("Automatic")) == true) {
@@ -144,19 +144,19 @@
 					$this->SendDebug("ReceiveData", "Ausloeser Aenderung Aktor-Status", 0);
 					
 				}
-			case 10815:
+			case 10821:
 				// Änderung des Wochenplans
 				$this->SendDebug("ReceiveData", "Ausloeser Aenderung Wochenplan", 0);
 				$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
 				$this->GetWeekplanState($WeekplanID);
 				break;
-			case 10816:
+			case 10822:
 				// Änderung des Wochenplans
 				$this->SendDebug("ReceiveData", "Ausloeser Aenderung Wochenplan", 0);
 				$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
 				$this->GetWeekplanState($WeekplanID);
 				break;
-			case 10817:
+			case 10823:
 				// Änderung des Wochenplans
 				$this->SendDebug("ReceiveData", "Ausloeser Aenderung Wochenplan", 0);
 				$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
