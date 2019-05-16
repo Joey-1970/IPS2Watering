@@ -157,7 +157,8 @@
 		//Durch alle Gruppen gehen
 		foreach($e['ScheduleGroups'] as $g) {
 		    //Überprüfen ob die Gruppe für heute zuständig ist
-		    if($g['Days'] & date("N") > 0) {
+		    if(($g['Days'] & pow(2,date("N",time())-1)) > 0)  {
+			//if($g['Days'] & date("N") > 0) {
 			//Aktuellen Schaltpunkt suchen. Wir nutzen die Eigenschaft, dass die Schaltpunkte immer aufsteigend sortiert sind.
 			foreach($g['Points'] as $p) {
 			   if(date("H") * 3600 + date("i") * 60 + date("s") >= $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second']) {
