@@ -75,7 +75,10 @@
 				// Änderung der Vorlauf-Temperatur
 				If ($SenderID == $this->ReadPropertyInteger("TemperatureSensorID")) {
 					$this->SendDebug("MessageSink", "Ausloeser Aenderung Temperatur-Status", 0);
-					
+					$Temperature = GetValueFloat($SenderID);
+					If (GetValueFloat($this->GetIDForIdent("Temperature")) <> $Temperature) {
+						SetValueFloat($this->GetIDForIdent("Temperature"),  $Temperature);
+					}
 				}
 			
 		}
