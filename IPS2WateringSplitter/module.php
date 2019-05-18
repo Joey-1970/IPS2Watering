@@ -8,12 +8,14 @@
             	parent::Create();
             	$this->RegisterPropertyBoolean("Open", false);
             	$this->RegisterPropertyInteger("TemperatureSensorID", 0);
+		$this->RegisterPropertyInteger("MinTemperature", 10);
 		
 		$this->RegisterVariableBoolean("Active", "Aktiv", "~Switch", 10);
 		$this->EnableAction("Active");
-		$this->RegisterVariableFloat("Temperature", "Temperatur", "~Temperature", 20);
-		$this->RegisterVariableFloat("MaxTemperature", "Max-Temperatur", "~Temperature", 30);
-		$this->RegisterVariableFloat("MinTemperature", "Min-Temperatur", "~Temperature", 40);
+		$this->RegisterVariableBoolean("Release", "Freigabe", "~Switch", 20);
+		$this->RegisterVariableFloat("Temperature", "Temperatur", "~Temperature", 30);
+		$this->RegisterVariableFloat("MaxTemperature", "Max-Temperatur", "~Temperature", 40);
+		$this->RegisterVariableFloat("MinTemperature", "Min-Temperatur", "~Temperature", 50);
         }
 	    
 	public function GetConfigurationForm() 
@@ -27,7 +29,9 @@
             	$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
             	$arrayElements[] = array("type" => "Label", "label" => "Temperatur-Sensor-Variable (Float, geloggt)");
             	$arrayElements[] = array("type" => "SelectVariable", "name" => "TemperatureSensorID", "caption" => "Aktor"); 
-		
+		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+            	$arrayElements[] = array("type" => "Label", "label" => "Mininmum-Temperatur");
+            	$arrayElements[] = array("type" => "NumberSpinner", "name" => "MinTemperature",  "caption" => "Grad (C°)");
 		$arrayActions = array();
             	$arrayActions[] = array("type" => "Label", "label" => "Diese Funktionen stehen erst nach Eingabe und Übernahme der erforderlichen Daten zur Verfügung!");
             	return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements, "actions" => $arrayActions)); 		 
