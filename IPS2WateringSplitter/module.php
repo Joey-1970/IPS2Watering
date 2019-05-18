@@ -30,7 +30,7 @@
             	$arrayElements[] = array("type" => "Label", "label" => "Temperatur-Sensor-Variable (Float, geloggt)");
             	$arrayElements[] = array("type" => "SelectVariable", "name" => "TemperatureSensorID", "caption" => "Aktor"); 
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-            	$arrayElements[] = array("type" => "Label", "label" => "Mininmum-Temperatur");
+            	$arrayElements[] = array("type" => "Label", "label" => "Minimum-Temperatur");
             	$arrayElements[] = array("type" => "NumberSpinner", "name" => "MinTemperature",  "caption" => "Grad (C°)");
 		$arrayActions = array();
             	$arrayActions[] = array("type" => "Label", "label" => "Diese Funktionen stehen erst nach Eingabe und Übernahme der erforderlichen Daten zur Verfügung!");
