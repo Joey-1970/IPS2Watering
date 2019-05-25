@@ -10,13 +10,14 @@
 		$this->RegisterPropertyBoolean("Open", false);
             	$this->RegisterPropertyInteger("ActuatorID", 0);
             	$this->RegisterPropertyInteger("SensorID", 0);
-		$this->RegisterPropertyInteger("MaxWatering", 30);
-            	$this->RegisterPropertyInteger("MinWaitTime", 180);
 		
+		$this->RegisterProfileInteger("IPS2Watering.MaxWatering", "Clock", "", "", 0, 60, 1);
 		
 		$this->RegisterVariableBoolean("Automatic", "Automatik", "~Switch", 10);
 		$this->EnableAction("Automatic");
             	$this->RegisterVariableBoolean("State", "Status", "~Switch", 20);	
+		$this->RegisterVariableInteger("MaxWatering", "Maximale Bewässerungszeit (min)", "IPS2Watering.MaxWatering", 30);
+		$this->EnableAction("MaxWatering");
 		
 		
         }
@@ -36,11 +37,7 @@
             	$arrayElements[] = array("type" => "Label", "label" => "Bodenfeuchtigkeits-Sensor-Variable (Float)");
             	$arrayElements[] = array("type" => "SelectVariable", "name" => "SensorID", "caption" => "Aktor"); 
             	$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________"); 
-            	$arrayElements[] = array("type" => "Label", "label" => "Maximale Bewässerungzeit im Automatik-Betrieb in Minuten:");
-	    	$arrayElements[] = array("type" => "NumberSpinner", "name" => "MaxWatering",  "caption" => "Dauer (min)");
-		$arrayElements[] = array("type" => "Label", "label" => "Minimale Pause zwischen Bewässerungphasen im Automatik-Betrieb in Minuten:");
-	    	$arrayElements[] = array("type" => "NumberSpinner", "name" => "MinWaitTime",  "caption" => "Dauer (min)");
-		
+            	
 		$arrayActions = array();
             	$arrayActions[] = array("type" => "Label", "label" => "Diese Funktionen stehen erst nach Eingabe und Übernahme der erforderlichen Daten zur Verfügung!");
 
@@ -105,6 +102,11 @@
 				    }
 			    }
 			    break;
+			case "MaxWatering":
+			    If ($this->ReadPropertyBoolean("Open") == true) {
+				    SetValueInteger($this->GetIDForIdent("MaxWatering"),  $Value);
+			    }
+			    break;
 	        default:
 	            throw new Exception("Invalid Ident");
 	    	}
@@ -130,7 +132,22 @@
 		$this->GetWeekplanState($WeekplanID);
 	}
 	
-	
+	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
+	{
+	        if (!IPS_VariableProfileExists($Name))
+	        {
+	            IPS_CreateVariableProfile($Name, 1);
+	        }
+	        else
+	        {
+	            $profile = IPS_GetVariableProfile($Name);
+	            if ($profile['ProfileType'] != 1)
+	                throw new Exception("Variable profile type does not match for profile " . $Name);
+	        }
+	        IPS_SetVariableProfileIcon($Name, $Icon);
+	        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
+	        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);        
+	}    
 	
 	
   
