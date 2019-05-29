@@ -83,6 +83,10 @@
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->GetWeekplanState($WeekplanID);
 			$this->SetTimerInterval("WeekplanState", (30 * 1000));
+			$ChildArray = Array();
+			$ChildArray = GetChildren($this->InstanceID);
+			$this->SendDebug("ApplyChanges", serialize($ChildArray), 0);
+
 			$this->SetStatus(102);
 		}
 		else {
@@ -144,7 +148,19 @@
 		$this->GetWeekplanState($WeekplanID);
 	}
 	    
-	
+	private function GetChildren($SplitterID)
+	{
+	    	$ChildArray = array();
+	    	$InstanceIDs = IPS_GetInstanceList();
+	    	foreach($InstanceIDs as $IID)
+		{
+		    	if(IPS_GetInstance($IID)['ConnectionID'] == $SplitterID) {
+				$ChildArray[] = $IID . PHP_EOL;
+		    	}
+		}
+	return  $ChildArray;
+	}
+	    
 	private function GetWeekplanState(int $WeekplanID)
 	{
 		$this->SendDebug("GetWeekplanState", "Wochenplan Status einlesen", 0);
