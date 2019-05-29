@@ -84,7 +84,7 @@
 			$this->GetWeekplanState($WeekplanID);
 			$this->SetTimerInterval("WeekplanState", (30 * 1000));
 			$ChildArray = Array();
-			$ChildArray = GetChildren($this->InstanceID);
+			$ChildArray = $this->GetChildren($this->InstanceID);
 			$this->SendDebug("ApplyChanges", serialize($ChildArray), 0);
 
 			$this->SetStatus(102);
