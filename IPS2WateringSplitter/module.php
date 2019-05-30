@@ -216,7 +216,7 @@
 					}
 					else 
 					{
-			      			break; //Sobald wir drüber sind, können wir abbrechen.
+			      			//break; //Sobald wir drüber sind, können wir abbrechen.
 			   		}
 		       		}
 				break; //Sobald wir unseren Tag gefunden haben, können wir die Schleife abbrechen. Jeder Tag darf nur in genau einer Gruppe sein.
