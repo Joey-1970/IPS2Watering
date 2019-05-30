@@ -86,7 +86,7 @@
 			$ChildArray = Array();
 			$ChildArray = $this->GetChildren($this->InstanceID);
 			$this->SendDebug("ApplyChanges", serialize($ChildArray), 0);
-
+			$this->GetChildrenMaxWatering();
 			$this->SetStatus(102);
 		}
 		else {
@@ -159,6 +159,13 @@
 		    	}
 		}
 	return  $ChildArray;
+	}
+	    
+	private function GetChildrenMaxWatering()
+	{
+		$MaxWateringArray = array();
+		$this->SetBuffer("MaxWateringArray"), $MaxWateringArray);
+		$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", "Function"=>"get_MaxWatering")));
 	}
 	    
 	private function GetWeekplanState(int $WeekplanID)
