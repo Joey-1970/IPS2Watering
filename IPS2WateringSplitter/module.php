@@ -207,7 +207,7 @@
 			   		if(date("H") * 3600 + date("i") * 60 + date("s") >= $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second']) 
 					{
 						$Starttime = $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second'];
-						$Success == true;
+						$Success = true;
 						$actionID = $p['ActionID'];
 			   		} 
 					elseif ($Success == true) {
