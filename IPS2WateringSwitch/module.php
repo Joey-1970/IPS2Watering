@@ -125,6 +125,26 @@
 		}
     	}        
 	    
+	public function ReceiveData($JSONString) 
+	{
+	    	// Empfangene Daten vom Gateway/Splitter
+	    	$data = json_decode($JSONString);
+	 	switch ($data->Function) {
+			case "get_MaxWatering":
+			   	If ($this->ReadPropertyBoolean("Open") == true) {
+					$MaxWatering =  GetValueInteger($this->GetIDForIdent("MaxWatering"));
+					$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
+										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $MaxWatering )));
+					
+				}
+				break;
+			
+			
+			
+	 	}
+ 	}
+	    
+	    
 	public function SetState()
 	{
 		$this->SendDebug("SetState", "Ausloesung", 0);
