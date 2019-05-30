@@ -193,6 +193,7 @@
 		$e = IPS_GetEvent($WeekplanID);
 		$Starttime = 0;
 		$Endtime = 0;
+		$Success = false;
 		$actionID = false;
 		//Durch alle Gruppen gehen
 		foreach($e['ScheduleGroups'] as $g) 
@@ -206,9 +207,13 @@
 			   		if(date("H") * 3600 + date("i") * 60 + date("s") >= $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second']) 
 					{
 						$Starttime = $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second'];
-						$Endtime = ($p + 1)['Start']['Hour'] * 3600 + ($p + 1)['Start']['Minute'] * 60 + ($p + 1)['Start']['Second'];
+						$Success == true;
 						$actionID = $p['ActionID'];
 			   		} 
+					elseif ($Success == true) {
+						$Endtime = $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second'];
+						break;
+					}
 					else 
 					{
 			      			break; //Sobald wir drüber sind, können wir abbrechen.
