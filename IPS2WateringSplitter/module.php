@@ -204,6 +204,8 @@
 			   		if(date("H") * 3600 + date("i") * 60 + date("s") >= $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second']) 
 					{
 			      			$actionID = $p['ActionID'];
+						$this->SendDebug("GetWeekplanState", "Startzeit: ". $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second'], 0);
+						$this->SendDebug("GetWeekplanState", "Endzeit: ".($p + 1)['Start']['Hour'] * 3600 + ($p + 1)['Start']['Minute'] * 60 + ($p + 1)['Start']['Second'], 0);
 			   		} 
 					else 
 					{
