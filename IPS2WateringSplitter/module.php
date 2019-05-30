@@ -191,6 +191,8 @@
 	{
 		$this->SendDebug("GetWeekplanState", "Wochenplan Status einlesen", 0);
 		$e = IPS_GetEvent($WeekplanID);
+		$Starttime = 0;
+		$Endtime = 0;
 		$actionID = false;
 		//Durch alle Gruppen gehen
 		foreach($e['ScheduleGroups'] as $g) 
