@@ -203,9 +203,9 @@
 				{
 			   		if(date("H") * 3600 + date("i") * 60 + date("s") >= $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second']) 
 					{
-			      			$actionID = $p['ActionID'];
-						$this->SendDebug("GetWeekplanState", "Startzeit: ". $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second'], 0);
-						$this->SendDebug("GetWeekplanState", "Endzeit: ".($p + 1)['Start']['Hour'] * 3600 + ($p + 1)['Start']['Minute'] * 60 + ($p + 1)['Start']['Second'], 0);
+						$Starttime = $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second'];
+						$Endtime = ($p + 1)['Start']['Hour'] * 3600 + ($p + 1)['Start']['Minute'] * 60 + ($p + 1)['Start']['Second'];
+						$actionID = $p['ActionID'];
 			   		} 
 					else 
 					{
@@ -215,6 +215,9 @@
 				break; //Sobald wir unseren Tag gefunden haben, können wir die Schleife abbrechen. Jeder Tag darf nur in genau einer Gruppe sein.
 		    	}
 		}
+		$this->SendDebug("GetWeekplanState", "Startzeit: ".$Starttime, 0);
+		$this->SendDebug("GetWeekplanState", "Endzeit: ".$Endtime, 0);
+
 		$this->SendDebug("GetWeekplanState", "Ergebnis: ".intval($actionID), 0);
 		If (GetValueInteger($this->GetIDForIdent("WeekplanState")) <> intval($actionID)) {
 			SetValueInteger($this->GetIDForIdent("WeekplanState"),  intval($actionID));
