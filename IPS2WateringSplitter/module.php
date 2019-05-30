@@ -154,7 +154,7 @@
 		    	$MaxWateringArray = array();
 			$MaxWateringArray = unserialize($this->GetBuffer("MaxWateringArray"));
 		        $MaxWateringArray[$data->InstanceID] = intval($data->MaxWatering);
-			$this->SetBuffer("MaxWateringArray", serialize($MaxWateringArray);
+			$this->SetBuffer("MaxWateringArray", serialize($MaxWateringArray));
 			$this->SendDebug("set_MaxWatering", serialize($MaxWateringArray), 0);		 
 			break;
 		}
@@ -183,7 +183,7 @@
 	private function GetChildrenMaxWatering()
 	{
 		$MaxWateringArray = array();
-		$this->SetBuffer("MaxWateringArray", serialize($MaxWateringArray);
+		$this->SetBuffer("MaxWateringArray", serialize($MaxWateringArray));
 		$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", "Function"=>"get_MaxWatering")));
 	}
 	    
