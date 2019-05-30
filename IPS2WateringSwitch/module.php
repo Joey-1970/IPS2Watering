@@ -65,12 +65,18 @@
 		}
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
-			
+			$MaxWatering =  GetValueInteger($this->GetIDForIdent("MaxWatering"));
+			$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
+										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $MaxWatering )));
+
 			
 			$this->SetStatus(102);
 		}
 		else {
-			
+			$MaxWatering = 0;
+			$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
+										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $MaxWatering )));
+
 			$this->SetStatus(104);
 		}
         }
@@ -105,6 +111,8 @@
 			case "MaxWatering":
 			    If ($this->ReadPropertyBoolean("Open") == true) {
 				    SetValueInteger($this->GetIDForIdent("MaxWatering"),  $Value);
+				    $this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
+										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $Value )));
 			    }
 			    break;
 	        default:
@@ -132,11 +140,13 @@
 	 	switch ($data->Function) {
 			case "get_MaxWatering":
 			   	If ($this->ReadPropertyBoolean("Open") == true) {
-					$MaxWatering =  GetValueInteger($this->GetIDForIdent("MaxWatering"));
-					$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
-										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $MaxWatering )));
-					
+					$MaxWatering =  GetValueInteger($this->GetIDForIdent("MaxWatering"));						
 				}
+				else {
+					$MaxWatering = 0;
+				}
+				$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
+										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $MaxWatering )));
 				break;
 			
 			
