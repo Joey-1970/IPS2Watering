@@ -206,6 +206,8 @@
 			   		if(date("H") * 3600 + date("i") * 60 + date("s") >= $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second']) 
 					{
 						$Starttime = $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second'];
+						$NextRun = IPS_GetEvent($WeekplanID)['NextRun'];
+						
 						$actionID = $p['ActionID'];
 			   		} 
 					else 
@@ -219,6 +221,7 @@
 		}
 		$this->SendDebug("GetWeekplanState", "Startzeit: ".$Starttime, 0);
 		$this->SendDebug("GetWeekplanState", "Endzeit: ".$Endtime, 0);
+		$this->SendDebug("GetWeekplanState", "NetxtRun: ".$NextRun, 0);
 
 		$this->SendDebug("GetWeekplanState", "Ergebnis: ".intval($actionID), 0);
 		If (GetValueInteger($this->GetIDForIdent("WeekplanState")) <> intval($actionID)) {
