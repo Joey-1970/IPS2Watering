@@ -192,7 +192,7 @@
 		$this->SendDebug("GetWeekplanState", "Wochenplan Status einlesen", 0);
 		$e = IPS_GetEvent($WeekplanID);
 		$Starttime = 0;
-		$Endtime = 0;
+		//$Endtime = 0;
 		$actionID = false;
 		//Durch alle Gruppen gehen
 		foreach($e['ScheduleGroups'] as $g) 
@@ -205,14 +205,14 @@
 				{
 			   		if(date("H") * 3600 + date("i") * 60 + date("s") >= $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second']) 
 					{
-						$Starttime = $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second'];
+						$Starttime = mktime (0 , 0 , 0, date("n") , date("j") , date("Y")) + $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second'];
 						$NextRun = IPS_GetEvent($WeekplanID)['NextRun'];
 						
 						$actionID = $p['ActionID'];
 			   		} 
 					else 
 					{
-			      			$Endtime = $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second'];
+			      			//$Endtime = $p['Start']['Hour'] * 3600 + $p['Start']['Minute'] * 60 + $p['Start']['Second'];
 						break; //Sobald wir drüber sind, können wir abbrechen.
 			   		}
 		       		}
@@ -220,8 +220,9 @@
 		    	}
 		}
 		$this->SendDebug("GetWeekplanState", "Startzeit: ".$Starttime, 0);
-		$this->SendDebug("GetWeekplanState", "Endzeit: ".$Endtime, 0);
-		$this->SendDebug("GetWeekplanState", "NetxtRun: ".$NextRun, 0);
+		//$this->SendDebug("GetWeekplanState", "Endzeit: ".$Endtime, 0);
+		$this->SendDebug("GetWeekplanState", "NextRun: ".$NextRun, 0);
+		$this->SendDebug("GetWeekplanState", "Differenz: ".($NextRun - $Starttime), 0);
 
 		$this->SendDebug("GetWeekplanState", "Ergebnis: ".intval($actionID), 0);
 		If (GetValueInteger($this->GetIDForIdent("WeekplanState")) <> intval($actionID)) {
