@@ -154,8 +154,10 @@
 		    	$MaxWateringArray = array();
 			$MaxWateringArray = unserialize($this->GetBuffer("MaxWateringArray"));
 		        $MaxWateringArray[$data->InstanceID] = intval($data->MaxWatering);
-			$this->SetBuffer("MaxWateringArray", serialize($MaxWateringArray));
-			$this->SendDebug("set_MaxWatering", serialize($MaxWateringArray), 0);		 
+			$this->SetBuffer("MaxWateringChilds", array_sum($MaxWateringArray));
+			$this->SendDebug("MaxWateringChilds", array_sum($MaxWateringArray), 0);
+			$this->SetBuffer("WateringArray", serialize($MaxWateringArray));
+			$this->SendDebug("WateringArray", serialize($MaxWateringArray), 0);		 
 			break;
 		}
 	return $Result;
