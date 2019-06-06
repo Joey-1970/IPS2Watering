@@ -152,7 +152,7 @@
 		    // GPIO Kommunikation
 		case "set_MaxWatering":
 		    	$MaxWateringArray = array();
-			$MaxWateringArray = unserialize($this->GetBuffer("MaxWateringArray"));
+			$MaxWateringArray = unserialize($this->GetBuffer("WateringArray"));
 		        $MaxWateringArray[$data->InstanceID] = intval($data->MaxWatering);
 			$this->SetBuffer("MaxWateringChilds", array_sum($MaxWateringArray));
 			$this->SendDebug("MaxWateringChilds", array_sum($MaxWateringArray), 0);
