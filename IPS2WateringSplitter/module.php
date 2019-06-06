@@ -219,11 +219,18 @@
 				break; //Sobald wir unseren Tag gefunden haben, können wir die Schleife abbrechen. Jeder Tag darf nur in genau einer Gruppe sein.
 		    	}
 		}
-		$this->SendDebug("GetWeekplanState", "Startzeit: ".$Starttime, 0);
-		//$this->SendDebug("GetWeekplanState", "Endzeit: ".$Endtime, 0);
-		$this->SendDebug("GetWeekplanState", "NextRun: ".$NextRun, 0);
-		$this->SendDebug("GetWeekplanState", "Differenz: ".($NextRun - $Starttime), 0);
-
+		
+		
+		
+		If (intval($actionID) == 1) {
+			$this->SetBuffer("MaxWateringTime", ($NextRun - $Starttime) / 60);
+			$this->SendDebug("GetWeekplanState", "MaxWateringTime: ".(($NextRun - $Starttime) / 60)." Minuten", 0);
+		}
+		else {
+			$this->SetBuffer("MaxWateringTime", 0);
+			$this->SendDebug("GetWeekplanState", "MaxWateringTime: 0 Minuten", 0);
+		}
+		
 		$this->SendDebug("GetWeekplanState", "Ergebnis: ".intval($actionID), 0);
 		If (GetValueInteger($this->GetIDForIdent("WeekplanState")) <> intval($actionID)) {
 			SetValueInteger($this->GetIDForIdent("WeekplanState"),  intval($actionID));
