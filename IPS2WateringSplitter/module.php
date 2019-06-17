@@ -35,12 +35,16 @@
 		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 1, "Freigabe", "LockOpen", 0x40FF00);
 		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 2, "Sperrzeit", "LockClosed", 0xFF0040);
 		
+		$this->RegisterProfileInteger("IPS2Watering.RadioButton_".$this->InstanceID, "Power", "", "", 0, 2, 1);
+		IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 0, "Aus", "Power", 0xFF0040);
+		
 		$this->RegisterVariableBoolean("Active", "Aktiv", "~Switch", 10);
 		$this->EnableAction("Active");
 		$this->RegisterVariableBoolean("Release", "Freigabe", "~Switch", 20);
 		$this->RegisterVariableFloat("Temperature", "Temperatur", "~Temperature", 30);
 		$this->RegisterVariableFloat("MaxTemperature", "Max-Temperatur", "~Temperature", 40);
 		$this->RegisterVariableFloat("MinTemperature", "Min-Temperatur", "~Temperature", 50);
+		$this->RegisterVariableInteger("RadioButton", "Manuelle Auswahl", "IPS2Watering.RadioButton_".$this->InstanceID, 60);
 		$this->RegisterVariableInteger("WeekplanState", "Wochenplanstatus", "IPS2Watering.WeekplanState", 100);
         }
 	    
