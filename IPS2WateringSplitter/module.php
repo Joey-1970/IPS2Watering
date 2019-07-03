@@ -107,12 +107,12 @@
   		switch($Ident) {
 			case "Active":
 			    If ($this->ReadPropertyBoolean("Open") == true) {
-				  
+				  SetValueBoolean($this->GetIDForIdent($Ident), $Value);
 			    }
 			    break;
 			case "RadioButton":
 			    If ($this->ReadPropertyBoolean("Open") == true) {
-				  
+				  SetValueInteger($this->GetIDForIdent($Ident), $Value);
 			    }
 			    break;	
 			
