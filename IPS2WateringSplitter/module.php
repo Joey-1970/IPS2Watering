@@ -88,6 +88,7 @@
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->GetWeekplanState($WeekplanID);
 			$this->SetTimerInterval("WeekplanState", (30 * 1000));
+			$this->ClearProfilAssociations();
 			$ChildArray = Array();
 			$ChildArray = $this->GetChildren($this->InstanceID);
 			$this->SendDebug("ApplyChanges", serialize($ChildArray), 0);
@@ -183,7 +184,7 @@
 		    	if(IPS_GetInstance($IID)['ConnectionID'] == $SplitterID) {
 				$InstanceID = $IID.PHP_EOL;
 				$ChildArray[] = $InstanceID;
-				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, $InstanceID, "Aus", "Power", 0xFF0040);
+				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, $InstanceID, IPS_GetName($InstanceID), "Drops", 0xFF0040);
 		    	}
 		}
 	return  $ChildArray;
@@ -246,7 +247,7 @@
 		}
 	}    
 	
-	private function ClaerProfilAssociations()
+	private function ClearProfilAssociations()
 	{
 		$ProfilArray = Array();
 		$ProfilArray = IPS_GetVariableProfile("IPS2Watering.RadioButton_".$this->InstanceID);
