@@ -185,7 +185,7 @@
 		    	if(IPS_GetInstance($IID)['ConnectionID'] == $SplitterID) {
 				$InstanceID = $IID.PHP_EOL;
 				$ChildArray[] = $InstanceID;
-				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, $InstanceID, IPS_GetName($InstanceID), "Drops", 0xFF0040);
+				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, $InstanceID, IPS_GetName($InstanceID), "Drops", -1);
 		    	}
 		}
 	return  $ChildArray;
