@@ -106,13 +106,22 @@
 	{
   		switch($Ident) {
 			case "Active":
-			    If ($this->ReadPropertyBoolean("Open") == true) {
-				  SetValueBoolean($this->GetIDForIdent($Ident), $Value);
-			    }
-			    break;
+			    	If ($this->ReadPropertyBoolean("Open") == true) {
+				  	SetValueBoolean($this->GetIDForIdent($Ident), $Value);
+			    	}
+			    	break;
 			case "RadioButton":
-			    If ($this->ReadPropertyBoolean("Open") == true) {
-				  SetValueInteger($this->GetIDForIdent($Ident), $Value);
+			    	If ($this->ReadPropertyBoolean("Open") == true) {
+				  	SetValueInteger($this->GetIDForIdent($Ident), $Value);
+				  	If ($Value == 0) {
+					 	// Aus
+				  	}
+			    	  	elseif ($Value == 1) {
+						// Programm
+					}
+					elseif ($Value >= 10000) {
+						// bestimmte Instanz
+					}
 			    }
 			    break;	
 			
@@ -258,7 +267,7 @@
 		$ProfilArray = IPS_GetVariableProfile("IPS2Watering.RadioButton_".$this->InstanceID);
 		foreach ($ProfilArray["Associations"] as $Association)
 		{
-    			If (intval($Association["Value"]) > 10000) {
+    			If (intval($Association["Value"]) >= 10000) {
 				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, intval($Association["Value"]), "", "", -1);
 			}
 		}
