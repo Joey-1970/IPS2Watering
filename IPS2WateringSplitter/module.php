@@ -37,6 +37,7 @@
 		
 		$this->RegisterProfileInteger("IPS2Watering.RadioButton_".$this->InstanceID, "Power", "", "", 0, 2, 1);
 		IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 0, "Aus", "Power", 0xFF0040);
+		IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 0, "Programm", "Power", 0xFF0040);
 		
 		$this->RegisterVariableBoolean("Active", "Aktiv", "~Switch", 10);
 		$this->EnableAction("Active");
@@ -180,7 +181,9 @@
 	    	foreach($InstanceIDs as $IID)
 		{
 		    	if(IPS_GetInstance($IID)['ConnectionID'] == $SplitterID) {
-				$ChildArray[] = $IID . PHP_EOL;
+				$InstanceID = $IID.PHP_EOL;
+				$ChildArray[] = $InstanceID;
+				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, $InstanceID, "Aus", "Power", 0xFF0040);
 		    	}
 		}
 	return  $ChildArray;
@@ -243,6 +246,18 @@
 		}
 	}    
 	
+	private function ClaerProfilAssociations()
+	{
+		$ProfilArray = Array();
+		$ProfilArray = IPS_GetVariableProfile("IPS2Watering.RadioButton_".$this->InstanceID);
+		foreach ($ProfilArray["Associations"] as $Association)
+		{
+    			If (intval($Association["Value"]) > 10000) {
+				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, intval($Association["Value"]), "", "", -1);
+			}
+		}
+	}
+	    
 	private function PenmanMonteith ($temp,$tmax,$tmin,$relfeu,$luftdruck,$unixzeit,$breite,$n,$albedo,$zm,$v,$rsc,$LAI,$effWH) 
 	{ 
 
