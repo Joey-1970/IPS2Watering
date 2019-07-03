@@ -110,7 +110,11 @@
 				  
 			    }
 			    break;
-				
+			case "RadioButton":
+			    If ($this->ReadPropertyBoolean("Open") == true) {
+				  
+			    }
+			    break;	
 			
 	        default:
 	            throw new Exception("Invalid Ident");
