@@ -46,6 +46,7 @@
 		$this->RegisterVariableFloat("MaxTemperature", "Max-Temperatur", "~Temperature", 40);
 		$this->RegisterVariableFloat("MinTemperature", "Min-Temperatur", "~Temperature", 50);
 		$this->RegisterVariableInteger("RadioButton", "Manuelle Auswahl", "IPS2Watering.RadioButton_".$this->InstanceID, 60);
+		$this->EnableAction("RadioButton");
 		$this->RegisterVariableInteger("WeekplanState", "Wochenplanstatus", "IPS2Watering.WeekplanState", 100);
         }
 	    
