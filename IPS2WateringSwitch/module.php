@@ -148,7 +148,12 @@
 				$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
 										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $MaxWatering )));
 				break;
-			
+			case "set_State":
+			   	SetValueBoolean($this->GetIDForIdent("State"),  boolval($data->State));
+				If ($this->ReadPropertyInteger("ActuatorID") > 0) {
+					RequestAction($this->ReadPropertyInteger("ActuatorID"), boolval($data->State));
+				}
+				break;
 			
 			
 	 	}
