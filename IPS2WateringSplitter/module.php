@@ -203,6 +203,11 @@
 				$InstanceID = $IID.PHP_EOL;
 				$ChildArray[] = $InstanceID;
 				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, $InstanceID, IPS_GetName($InstanceID), "Drops", -1);
+				// Nachrichten abonnieren
+				$this->RegisterMessage($InstanceID, 10505); // Statusänderung
+				$this->RegisterMessage($InstanceID, 10506); // Einstellungen Veränderung
+				$this->RegisterMessage($InstanceID, 10404); // Namesänderung
+				$this->RegisterMessage($InstanceID, 10402); // Obejekt wurde entfernt
 		    	}
 		}
 	return  $ChildArray;
