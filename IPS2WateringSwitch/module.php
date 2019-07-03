@@ -151,7 +151,12 @@
 			case "set_State":
 			   	SetValueBoolean($this->GetIDForIdent("State"),  boolval($data->State));
 				If ($this->ReadPropertyInteger("ActuatorID") > 0) {
-					RequestAction($this->ReadPropertyInteger("ActuatorID"), boolval($data->State));
+					If ($data->InstanceID == $this->InstanceID) {
+						RequestAction($this->ReadPropertyInteger("ActuatorID"), boolval($data->State));
+					}
+					else {
+						RequestAction($this->ReadPropertyInteger("ActuatorID"), false);
+					}
 				}
 				break;
 			
