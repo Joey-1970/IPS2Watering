@@ -149,12 +149,13 @@
 										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $MaxWatering )));
 				break;
 			case "set_State":
-			   	SetValueBoolean($this->GetIDForIdent("State"),  boolval($data->State));
 				If ($this->ReadPropertyInteger("ActuatorID") > 0) {
 					If ($data->InstanceID == $this->InstanceID) {
+						SetValueBoolean($this->GetIDForIdent("State"),  boolval($data->State));
 						RequestAction($this->ReadPropertyInteger("ActuatorID"), boolval($data->State));
 					}
 					else {
+						SetValueBoolean($this->GetIDForIdent("State"), false);
 						RequestAction($this->ReadPropertyInteger("ActuatorID"), false);
 					}
 				}
