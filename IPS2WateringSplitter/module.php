@@ -182,7 +182,7 @@
 	    	$InstanceIDs = IPS_GetInstanceList();
 	    	foreach($InstanceIDs as $IID)
 		{
-		    	if(IPS_GetInstance($IID)['ConnectionID'] == $SplitterID) {
+		    	if ((IPS_GetInstance($IID)['ConnectionID'] == $SplitterID) AND (IPS_GetInstance($IID)['InstanceStatus'] == 102)) {
 				$InstanceID = $IID.PHP_EOL;
 				$ChildArray[] = $InstanceID;
 				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, $InstanceID, IPS_GetName($InstanceID), "Drops", -1);
