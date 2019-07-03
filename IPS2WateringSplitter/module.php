@@ -37,7 +37,7 @@
 		
 		$this->RegisterProfileInteger("IPS2Watering.RadioButton_".$this->InstanceID, "Power", "", "", 0, 2, 0);
 		IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 0, "Aus", "Power", 0xFF0040);
-		IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 1, "Programm", "Power", 0xFF0040);
+		IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 1, "Programm", "Power", 0x40FF00);
 		
 		$this->RegisterVariableBoolean("Active", "Aktiv", "~Switch", 10);
 		$this->EnableAction("Active");
