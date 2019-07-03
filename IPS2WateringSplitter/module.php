@@ -115,14 +115,16 @@
 				  	SetValueInteger($this->GetIDForIdent($Ident), $Value);
 				  	If ($Value == 0) {
 					 	// Aus
-						$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", "Function"=>"set_State", "InstanceID" => 0, "State"=>0)));
+						$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+											    "Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
 				  	}
 			    	  	elseif ($Value == 1) {
 						// Programm
 					}
 					elseif ($Value >= 10000) {
 						// bestimmte Instanz
-						$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", "Function"=>"set_State", "InstanceID" =>$Value, "State"=>0)));
+						$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+											    "Function"=>"set_State", "InstanceID" =>$Value, "State"=>true)));
 					}
 			    }
 			    break;	
