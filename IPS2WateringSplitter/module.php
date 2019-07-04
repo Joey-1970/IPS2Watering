@@ -7,6 +7,7 @@
 		//Never delete this line!
 		parent::Destroy();
 		$this->SetTimerInterval("WeekplanState", 0);
+		$this->SetTimerInterval("WateringTimer", 0);
 	}    
 	    
 	    
@@ -29,6 +30,8 @@
 		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 2, "Sperrzeit", 0xFF0040, "WateringSwitch_SetState(\$_IPS['TARGET'], 1);");	
 
 		$this->RegisterTimer("WeekplanState", 0, 'WateringSplitter_TimerEventGetWeekplanState($_IPS["TARGET"]);'); 
+		
+		$this->RegisterTimer("WateringTimer", 0, 'WateringSplitter_WateringTimerEvent($_IPS["TARGET"]);'); 
 		
             	$this->RegisterProfileInteger("IPS2Watering.WeekplanState", "Information", "", "", 0, 2, 1);
 		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 0, "Undefiniert", "Warning", 0xFF0040);
@@ -120,6 +123,7 @@
 				  	}
 			    	  	elseif ($Value == 1) {
 						// Programm
+						$this->StartWateringProgramm();
 					}
 					elseif ($Value >= 10000) {
 						// bestimmte Instanz
@@ -173,16 +177,16 @@
 	    	$data = json_decode($JSONString);
 	    	$Result = -999;
 	 	switch ($data->Function) {
-		    // GPIO Kommunikation
-		case "set_MaxWatering":
-		    	$MaxWateringArray = array();
-			$MaxWateringArray = unserialize($this->GetBuffer("WateringArray"));
-		        $MaxWateringArray[$data->InstanceID] = intval($data->MaxWatering);
-			$this->SetBuffer("MaxWateringChilds", array_sum($MaxWateringArray));
-			$this->SendDebug("MaxWateringChilds", array_sum($MaxWateringArray), 0);
-			$this->SetBuffer("WateringArray", serialize($MaxWateringArray));
-			$this->SendDebug("WateringArray", serialize($MaxWateringArray), 0);		 
-			break;
+		    	// GPIO Kommunikation
+			case "set_MaxWatering":
+				$MaxWateringArray = array();
+				$MaxWateringArray = unserialize($this->GetBuffer("WateringArray"));
+				$MaxWateringArray[$data->InstanceID] = intval($data->MaxWatering);
+				$this->SetBuffer("MaxWateringChilds", array_sum($MaxWateringArray));
+				$this->SendDebug("MaxWateringChilds", array_sum($MaxWateringArray), 0);
+				$this->SetBuffer("WateringArray", serialize($MaxWateringArray));
+				$this->SendDebug("WateringArray", serialize($MaxWateringArray), 0);		 
+				break;
 		}
 	return $Result;
 	}
@@ -269,6 +273,18 @@
 			SetValueInteger($this->GetIDForIdent("WeekplanState"),  intval($actionID));
 		}
 	}    
+	
+	private function StartWateringProgramm()
+	{
+		$MaxWateringArray = array();
+		$MaxWateringArray = unserialize($this->GetBuffer("WateringArray"));
+		
+	}
+	
+	public function WateringTimerEvent()
+	{
+		
+	}
 	
 	private function ClearProfilAssociations()
 	{
