@@ -307,12 +307,14 @@
 			$Instance = array_keys($MaxWateringArray)[$StepCounter];
 			// Element (Dauer)
 			$Duration = array_values($MaxWateringArray)[$StepCounter];
-			// Wasserkreis öffnen
-			$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
-					"Function"=>"set_State", "InstanceID" =>$Instance, "State"=>true)));
+			If ($Duration > 0) {
+				// Wasserkreis öffnen
+				$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+						"Function"=>"set_State", "InstanceID" =>$Instance, "State"=>true)));
 
-			// Timer Setzen
-			$this->SetTimerInterval("WateringTimer", 1000 * 60 * $Duration);
+				// Timer Setzen
+				$this->SetTimerInterval("WateringTimer", 1000 * 60 * $Duration);
+			}
 		}
 		else {
 			$this->SetBuffer("WateringProgramm", 0);
