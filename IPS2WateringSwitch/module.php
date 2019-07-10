@@ -139,7 +139,7 @@
 	    	$data = json_decode($JSONString);
 	 	switch ($data->Function) {
 			case "get_MaxWatering":
-			   	If ($this->ReadPropertyBoolean("Open") == true) {
+			   	If (($this->ReadPropertyBoolean("Open") == true) AND (GetValueBoolean($this->GetIDForIdent("Automatic")) == true)) {
 					$MaxWatering =  GetValueInteger($this->GetIDForIdent("MaxWatering"));						
 				}
 				else {
