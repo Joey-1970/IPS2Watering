@@ -51,6 +51,8 @@
 		$this->RegisterVariableInteger("RadioButton", "Manuelle Auswahl", "IPS2Watering.RadioButton_".$this->InstanceID, 60);
 		$this->EnableAction("RadioButton");
 		$this->RegisterVariableInteger("WeekplanState", "Wochenplanstatus", "IPS2Watering.WeekplanState", 100);
+		$this->RegisterVariableInteger("ActiveChildren", "Aktive Wasserkreise", "", 110);
+		$this->RegisterVariableInteger("StepCounter", "Schrittzähler", "", 120);
         }
 	    
 	public function GetConfigurationForm() 
@@ -88,6 +90,8 @@
 		If ($this->ReadPropertyInteger("TemperatureSensorID") > 0) {
 			$this->RegisterMessage($this->ReadPropertyInteger("TemperatureSensorID"), 10603);
 		}
+		
+		SetValueInteger($this->GetIDForIdent("StepCounter"),  0);
 	
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->GetWeekplanState($WeekplanID);
@@ -95,8 +99,11 @@
 			$this->ClearProfilAssociations();
 			$ChildArray = Array();
 			$ChildArray = $this->GetChildren($this->InstanceID);
+			SetValueInteger($this->GetIDForIdent("ActiveChildren"),  count($ChildArray));
 			$this->SendDebug("ApplyChanges", serialize($ChildArray), 0);
 			$this->GetChildrenMaxWatering();
+			$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+							"Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
 			$this->SetStatus(102);
 		}
 		else {
@@ -214,6 +221,7 @@
 				$this->RegisterMessage($InstanceID, 10402); // Obejekt wurde entfernt
 		    	}
 		}
+		
 	return  $ChildArray;
 	}
 	    
@@ -278,7 +286,11 @@
 	{
 		$MaxWateringArray = array();
 		$MaxWateringArray = unserialize($this->GetBuffer("WateringArray"));
-		
+		// Schrittzähler zurücksetzen
+		SetValueInteger($this->GetIDForIdent("StepCounter"),  0);
+		// alle Ventile schließen
+		$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+							"Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
 	}
 	
 	public function WateringTimerEvent()
