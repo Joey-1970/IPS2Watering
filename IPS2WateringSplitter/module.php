@@ -284,12 +284,15 @@
 	
 	private function StartWateringProgram()
 	{
-		// Schrittzähler zurücksetzen
-		SetValueInteger($this->GetIDForIdent("StepCounter"),  0);
-		// alle Ventile schließen
-		$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
-							"Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
-		
+		If (intval($this->GetBuffer("WateringProgramm") == 0) {
+			$this->SetBuffer("WateringProgramm", 1);
+			// Schrittzähler zurücksetzen
+			SetValueInteger($this->GetIDForIdent("StepCounter"),  0);
+			// alle Ventile schließen
+			$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+								"Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
+			$this->WateringProgram();
+		}
 	}
 	    
 	private function WateringProgram()
@@ -311,6 +314,9 @@
 			// Timer Setzen
 			$this->SetTimerInterval("WateringTimer", 1000 * 60 * $Duration);
 		}
+		else {
+			$this->SetBuffer("WateringProgramm", 0);
+		}	
 	}
 	
 	public function WateringTimerEvent()
