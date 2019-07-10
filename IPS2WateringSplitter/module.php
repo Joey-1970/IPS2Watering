@@ -322,6 +322,7 @@
 		}
 		else {
 			$this->SetBuffer("WateringProgramm", 0);
+			SetValueInteger($this->GetIDForIdent("RadioButton"), 0);
 		}	
 	}
 	
