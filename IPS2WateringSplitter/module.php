@@ -92,6 +92,8 @@
 		}
 		
 		SetValueInteger($this->GetIDForIdent("StepCounter"),  0);
+		$this->SetBuffer("WateringProgramm", 0);
+		$this->SetTimerInterval("WateringTimer", 0);
 	
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->GetWeekplanState($WeekplanID);
@@ -125,6 +127,8 @@
 				  	SetValueInteger($this->GetIDForIdent($Ident), $Value);
 				  	If ($Value == 0) {
 					 	// Aus
+						$this->SetBuffer("WateringProgramm", 0);
+						$this->SetTimerInterval("WateringTimer", 0);
 						$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
 											    "Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
 				  	}
