@@ -50,6 +50,7 @@
 		$this->RegisterVariableFloat("MinTemperature", "Min-Temperatur", "~Temperature", 50);
 		$this->RegisterVariableInteger("RadioButton", "Manuelle Auswahl", "IPS2Watering.RadioButton_".$this->InstanceID, 60);
 		$this->EnableAction("RadioButton");
+		$this->RegisterVariableBoolean("ProgramActive", "Programm aktiv", "~Switch", 70);
 		$this->RegisterVariableInteger("WeekplanState", "Wochenplanstatus", "IPS2Watering.WeekplanState", 100);
 		$this->RegisterVariableInteger("ActiveChildren", "Aktive Wasserkreise", "", 110);
 		$this->RegisterVariableInteger("StepCounter", "Schrittzähler", "", 120);
@@ -94,6 +95,7 @@
 		SetValueInteger($this->GetIDForIdent("StepCounter"),  0);
 		$this->SetBuffer("WateringProgramm", 0);
 		$this->SetTimerInterval("WateringTimer", 0);
+		SetValueBoolean($this->GetIDForIdent("ProgramActive"), false);
 	
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->GetWeekplanState($WeekplanID);
@@ -128,6 +130,7 @@
 				  	If ($Value == 0) {
 					 	// Aus
 						$this->SetBuffer("WateringProgramm", 0);
+						SetValueBoolean($this->GetIDForIdent("ProgramActive"), false);
 						$this->SetTimerInterval("WateringTimer", 0);
 						$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
 											    "Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
@@ -290,6 +293,7 @@
 	{
 		If (intval($this->GetBuffer("WateringProgramm") == 0)) {
 			$this->SetBuffer("WateringProgramm", 1);
+			SetValueBoolean($this->GetIDForIdent("ProgramActive"), true);
 			// Schrittzähler zurücksetzen
 			SetValueInteger($this->GetIDForIdent("StepCounter"),  0);
 			// alle Ventile schließen
@@ -322,6 +326,9 @@
 		}
 		else {
 			$this->SetBuffer("WateringProgramm", 0);
+			SetValueBoolean($this->GetIDForIdent("ProgramActive"), false);
+			// Schrittzähler zurücksetzen
+			SetValueInteger($this->GetIDForIdent("StepCounter"),  0);
 			SetValueInteger($this->GetIDForIdent("RadioButton"), 0);
 		}	
 	}
