@@ -291,6 +291,11 @@
 		// alle Ventile schließen
 		$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
 							"Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
+		// Erstes Element (Dauer)
+		$Time = array_values($MaxWateringArray)[0];
+		
+		// Erste Schlüssel (Instanz)
+		$Instance = array_keys($MaxWateringArray)[0];
 	}
 	
 	public function WateringTimerEvent()
