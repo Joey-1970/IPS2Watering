@@ -130,7 +130,7 @@
 				  	}
 			    	  	elseif ($Value == 1) {
 						// Programm
-						$this->StartWateringProgramm();
+						$this->StartWateringProgram();
 					}
 					elseif ($Value >= 10000) {
 						// bestimmte Instanz
@@ -282,25 +282,46 @@
 		}
 	}    
 	
-	private function StartWateringProgramm()
+	private function StartWateringProgram()
 	{
-		$MaxWateringArray = array();
-		$MaxWateringArray = unserialize($this->GetBuffer("WateringArray"));
 		// Schrittzähler zurücksetzen
 		SetValueInteger($this->GetIDForIdent("StepCounter"),  0);
 		// alle Ventile schließen
 		$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
 							"Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
-		// Erstes Element (Dauer)
-		$Time = array_values($MaxWateringArray)[0];
 		
-		// Erste Schlüssel (Instanz)
-		$Instance = array_keys($MaxWateringArray)[0];
+	}
+	    
+	private function WateringProgram()
+	{
+		$MaxWateringArray = array();
+		$MaxWateringArray = unserialize($this->GetBuffer("WateringArray"));
+		
+		$StepCounter = GetValueInteger($this->GetIDForIdent("StepCounter"));
+		
+		If ($StepCounter < count($MaxWateringArray)) {
+			// Schlüssel (Instanz)
+			$Instance = array_keys($MaxWateringArray)[$StepCounter];
+			// Element (Dauer)
+			$Duration = array_values($MaxWateringArray)[$StepCounter];
+			// Wasserkreis öffnen
+			$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+					"Function"=>"set_State", "InstanceID" =>$Instance, "State"=>true)));
+
+			// Timer Setzen
+			$this->SetTimerInterval("WateringTimer", 1000 * 60 * $Duration);
+		}
 	}
 	
 	public function WateringTimerEvent()
 	{
-		
+		$this->SetTimerInterval("WateringTimer", 0);
+		// Schrittzähler um einen hochsetzen
+		SetValueInteger($this->GetIDForIdent("StepCounter"),  (GetValueInteger($this->GetIDForIdent("StepCounter")) + 1));
+		// alle Ventile schließen
+		$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+							"Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
+		$this->WateringProgram();
 	}
 	
 	private function ClearProfilAssociations()
