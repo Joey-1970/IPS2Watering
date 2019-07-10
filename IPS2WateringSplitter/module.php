@@ -284,7 +284,7 @@
 	
 	private function StartWateringProgram()
 	{
-		If (intval($this->GetBuffer("WateringProgramm") == 0) {
+		If (intval($this->GetBuffer("WateringProgramm") == 0)) {
 			$this->SetBuffer("WateringProgramm", 1);
 			// Schrittzähler zurücksetzen
 			SetValueInteger($this->GetIDForIdent("StepCounter"),  0);
