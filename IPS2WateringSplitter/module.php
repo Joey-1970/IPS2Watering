@@ -219,7 +219,7 @@
 		{
 		    	if ((IPS_GetInstance($IID)['ConnectionID'] == $SplitterID) AND (IPS_GetInstance($IID)['InstanceStatus'] == 102)) {
 				$InstanceID = $IID.PHP_EOL;
-				$ChildArray[] = $InstanceID;
+				$ChildArray[] = intval($InstanceID);
 				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, $InstanceID, IPS_GetName($InstanceID), "Drops", -1);
 				// Nachrichten abonnieren
 				$this->RegisterMessage($InstanceID, 10505); // Statusänderung
@@ -292,6 +292,7 @@
 	private function StartWateringProgram()
 	{
 		If (intval($this->GetBuffer("WateringProgramm") == 0)) {
+			$this->SendDebug("StartWateringProgram", "Ausfuehrung", 0);
 			$this->SetBuffer("WateringProgramm", 1);
 			SetValueBoolean($this->GetIDForIdent("ProgramActive"), true);
 			// Schrittzähler zurücksetzen
@@ -305,6 +306,7 @@
 	    
 	private function WateringProgram()
 	{
+		$this->SendDebug("WateringProgram", "Ausfuehrung", 0);
 		$MaxWateringArray = array();
 		$MaxWateringArray = unserialize($this->GetBuffer("WateringArray"));
 		
@@ -323,6 +325,11 @@
 				// Timer Setzen
 				$this->SetTimerInterval("WateringTimer", 1000 * 60 * $Duration);
 			}
+			else {
+				// Schrittzähler um einen hochsetzen
+				SetValueInteger($this->GetIDForIdent("StepCounter"),  (GetValueInteger($this->GetIDForIdent("StepCounter")) + 1));
+				$this->WateringProgram();
+			}
 		}
 		else {
 			$this->SetBuffer("WateringProgramm", 0);
@@ -335,6 +342,7 @@
 	
 	public function WateringTimerEvent()
 	{
+		$this->SendDebug("WateringTimerEvent", "Ausfuehrung", 0);
 		$this->SetTimerInterval("WateringTimer", 0);
 		// Schrittzähler um einen hochsetzen
 		SetValueInteger($this->GetIDForIdent("StepCounter"),  (GetValueInteger($this->GetIDForIdent("StepCounter")) + 1));
