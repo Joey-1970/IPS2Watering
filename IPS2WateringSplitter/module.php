@@ -328,7 +328,7 @@
 			$this->SetBuffer("WateringProgramm", 0);
 			SetValueBoolean($this->GetIDForIdent("ProgramActive"), false);
 			// Schrittzähler zurücksetzen
-			SetValueInteger($this->GetIDForIdent("StepCounter"),  0);
+			SetValueInteger($this->GetIDForIdent("StepCounter"), 0);
 			SetValueInteger($this->GetIDForIdent("RadioButton"), 0);
 		}	
 	}
