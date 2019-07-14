@@ -51,6 +51,7 @@
 		$this->RegisterVariableInteger("RadioButton", "Manuelle Auswahl", "IPS2Watering.RadioButton_".$this->InstanceID, 60);
 		$this->EnableAction("RadioButton");
 		$this->RegisterVariableBoolean("ProgramActive", "Programm aktiv", "~Switch", 70);
+		$this->RegisterVariableString("ProgramStep", "Programm Schritt", "", 80);
 		$this->RegisterVariableInteger("WeekplanState", "Wochenplanstatus", "IPS2Watering.WeekplanState", 100);
 		$this->RegisterVariableInteger("ActiveChildren", "Aktive Wasserkreise", "", 110);
 		$this->RegisterVariableInteger("StepCounter", "Schrittzähler", "", 120);
@@ -96,6 +97,7 @@
 		$this->SetBuffer("WateringProgramm", 0);
 		$this->SetTimerInterval("WateringTimer", 0);
 		SetValueBoolean($this->GetIDForIdent("ProgramActive"), false);
+		SetValueString($this->GetIDForIdent("ProgramStep"), "---");
 	
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->GetWeekplanState($WeekplanID);
@@ -131,6 +133,7 @@
 					 	// Aus
 						$this->SetBuffer("WateringProgramm", 0);
 						SetValueBoolean($this->GetIDForIdent("ProgramActive"), false);
+						SetValueString($this->GetIDForIdent("ProgramStep"), "---");
 						$this->SetTimerInterval("WateringTimer", 0);
 						$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
 											    "Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
@@ -319,6 +322,7 @@
 			$Duration = array_values($MaxWateringArray)[$StepCounter];
 			If ($Duration > 0) {
 				// Wasserkreis öffnen
+				SetValueString($this->GetIDForIdent("ProgramStep"), IPS_GetName($Instance));
 				$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
 						"Function"=>"set_State", "InstanceID" =>$Instance, "State"=>true)));
 
@@ -337,6 +341,7 @@
 			// Schrittzähler zurücksetzen
 			SetValueInteger($this->GetIDForIdent("StepCounter"), 0);
 			SetValueInteger($this->GetIDForIdent("RadioButton"), 0);
+			SetValueString($this->GetIDForIdent("ProgramStep"), "---");
 		}	
 	}
 	
