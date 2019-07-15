@@ -295,6 +295,7 @@
 	private function StartWateringProgram()
 	{
 		If (intval($this->GetBuffer("WateringProgramm") == 0)) {
+			$this->GetChildrenMaxWatering();
 			$this->SendDebug("StartWateringProgram", "Ausfuehrung", 0);
 			$this->SetBuffer("WateringProgramm", 1);
 			SetValueBoolean($this->GetIDForIdent("ProgramActive"), true);
