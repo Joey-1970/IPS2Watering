@@ -8,6 +8,7 @@
 		parent::Destroy();
 		$this->SetTimerInterval("WeekplanState", 0);
 		$this->SetTimerInterval("WateringTimer", 0);
+		$this->SetTimerInterval("WateringTimerSingle", 0);
 	}    
 	    
 	    
@@ -32,6 +33,8 @@
 		$this->RegisterTimer("WeekplanState", 0, 'WateringSplitter_TimerEventGetWeekplanState($_IPS["TARGET"]);'); 
 		
 		$this->RegisterTimer("WateringTimer", 0, 'WateringSplitter_WateringTimerEvent($_IPS["TARGET"]);'); 
+		
+		$this->RegisterTimer("WateringTimerSingle", 0, 'WateringSplitter_WateringTimerEventSingle($_IPS["TARGET"]);');
 		
             	$this->RegisterProfileInteger("IPS2Watering.WeekplanState", "Information", "", "", 0, 2, 1);
 		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 0, "Undefiniert", "Warning", 0xFF0040);
@@ -96,6 +99,7 @@
 		SetValueInteger($this->GetIDForIdent("StepCounter"),  0);
 		$this->SetBuffer("WateringProgramm", 0);
 		$this->SetTimerInterval("WateringTimer", 0);
+		$this->SetTimerInterval("WateringTimerSingle", 0);
 		SetValueBoolean($this->GetIDForIdent("ProgramActive"), false);
 		SetValueString($this->GetIDForIdent("ProgramStep"), "---");
 	
@@ -142,10 +146,22 @@
 						// Programm
 						$this->StartWateringProgram();
 					}
-					elseif ($Value >= 10000) {
+					elseif (($Value >= 10000) AND ($Value < 100000)) {
 						// bestimmte Instanz
 						$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
 											    "Function"=>"set_State", "InstanceID" =>$Value, "State"=>true)));
+					}
+					elseif ($Value >= 100000) {
+						// bestimmte Instanz
+						$MaxWateringArray = array();
+						$MaxWateringArray = unserialize($this->GetBuffer("WateringArray"));
+						$InstanceID = $Value - 100000;
+						// aus dem Array die maximale Bewässerungszeit finden
+						$Duration = $MaxWateringArray[$InstanceID];
+						// Timer Setzen
+						$this->SetTimerInterval("WateringTimerSingle", 1000 * 60 * $Duration);
+						$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+											    "Function"=>"set_State", "InstanceID" => $InstanceID, "State"=>true)));
 					}
 			    }
 			    break;	
@@ -223,7 +239,11 @@
 		    	if ((IPS_GetInstance($IID)['ConnectionID'] == $SplitterID) AND (IPS_GetInstance($IID)['InstanceStatus'] == 102)) {
 				$InstanceID = $IID.PHP_EOL;
 				$ChildArray[] = intval($InstanceID);
+				// Assozistion ohne Zeitlimit
 				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, $InstanceID, IPS_GetName($InstanceID), "Drops", -1);
+				// Assozistion mit Zeitlimit
+				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 100000 + $InstanceID, IPS_GetName($InstanceID)."/Zeitlimit", "Drops", -1);
+
 				// Nachrichten abonnieren
 				$this->RegisterMessage($InstanceID, 10505); // Statusänderung
 				$this->RegisterMessage($InstanceID, 10506); // Einstellungen Veränderung
@@ -358,6 +378,16 @@
 		$this->WateringProgram();
 	}
 	
+	public function WateringTimerEventSingle()
+	{
+		$this->SendDebug("WateringTimerEventSingle", "Ausfuehrung", 0);
+		$this->SetTimerInterval("WateringTimerSingle", 0);
+		// alle Ventile schließen
+		$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+							"Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
+		SetValueInteger($this->GetIDForIdent("RadioButton"), 0);
+	}
+	    
 	private function ClearProfilAssociations()
 	{
 		$ProfilArray = Array();
