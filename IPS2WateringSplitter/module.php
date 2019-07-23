@@ -242,7 +242,7 @@
 				// Assozistion ohne Zeitlimit
 				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, $InstanceID, IPS_GetName($InstanceID), "Drops", -1);
 				// Assozistion mit Zeitlimit
-				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 100000 + $InstanceID, IPS_GetName($InstanceID)." (Zeitlimit)", "Drops", -1);
+				IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, (100000 + intval($InstanceID)), IPS_GetName($InstanceID)." (Zeitlimit)", "Drops", -1);
 
 				// Nachrichten abonnieren
 				$this->RegisterMessage($InstanceID, 10505); // Statusänderung
