@@ -90,7 +90,8 @@
 		$this->RegisterMessage($WeekplanID, 10822);
 		$this->RegisterMessage($WeekplanID, 10823);
 		
-		
+		//Registrierung für den Kernel
+		$this->RegisterMessage($this->InstanceID, 10103);
 		// Registrierung für die Änderung des Aktor-Status
 		If ($this->ReadPropertyInteger("TemperatureSensorID") > 0) {
 			$this->RegisterMessage($this->ReadPropertyInteger("TemperatureSensorID"), 10603);
@@ -174,6 +175,14 @@
 	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     	{
 		switch ($Message) {
+			case 10103:
+				// Kernel ist fertig
+				$this->ClearProfilAssociations();
+				$ChildArray = Array();
+				$ChildArray = $this->GetChildren($this->InstanceID);
+				SetValueInteger($this->GetIDForIdent("ActiveChildren"),  count($ChildArray));
+				$this->GetChildrenMaxWatering();
+				break;
 			case 10603:
 				// Änderung der Vorlauf-Temperatur
 				If ($SenderID == $this->ReadPropertyInteger("TemperatureSensorID")) {
@@ -183,6 +192,7 @@
 						SetValueFloat($this->GetIDForIdent("Temperature"),  $Temperature);
 					}
 				}
+				break;
 			case 10821:
 				// Änderung des Wochenplans
 				$this->SendDebug("MessageSink", "Ausloeser Aenderung Wochenplan", 0);
