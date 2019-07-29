@@ -27,8 +27,8 @@
 		for ($i = 0; $i <= 6; $i++) {
 			IPS_SetEventScheduleGroup($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), $i, pow(2, $i));
 		}
-		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 1, "Freigabe", 0x40FF00, "WateringSwitch_SetState(\$_IPS['TARGET'], 1);");	
-		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 2, "Sperrzeit", 0xFF0040, "WateringSwitch_SetState(\$_IPS['TARGET'], 1);");	
+		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 1, "Freigabe", 0x00FF00, "WateringSwitch_SetState(\$_IPS['TARGET'], 1);");	
+		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 2, "Sperrzeit", 0xFF0000, "WateringSwitch_SetState(\$_IPS['TARGET'], 1);");	
 
 		$this->RegisterTimer("WeekplanState", 0, 'WateringSplitter_TimerEventGetWeekplanState($_IPS["TARGET"]);'); 
 		
@@ -37,13 +37,13 @@
 		$this->RegisterTimer("WateringTimerSingle", 0, 'WateringSplitter_WateringTimerEventSingle($_IPS["TARGET"]);');
 		
             	$this->RegisterProfileInteger("IPS2Watering.WeekplanState", "Information", "", "", 0, 2, 1);
-		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 0, "Undefiniert", "Warning", 0xFF0040);
-		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 1, "Freigabe", "LockOpen", 0x40FF00);
-		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 2, "Sperrzeit", "LockClosed", 0xFF0040);
+		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 0, "Undefiniert", "Warning", 0xFF0000);
+		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 1, "Freigabe", "LockOpen", 0x00FF00);
+		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 2, "Sperrzeit", "LockClosed", 0xFF0000);
 		
 		$this->RegisterProfileInteger("IPS2Watering.RadioButton_".$this->InstanceID, "Power", "", "", 0, 2, 0);
-		IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 0, "Aus", "Power", 0xFF0040);
-		IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 1, "Programm", "Power", 0x40FF00);
+		IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 0, "Aus", "Power", 0xFF0000);
+		IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 1, "Programm", "Power", 0x00FF00);
 		
 		$this->RegisterVariableBoolean("Active", "Aktiv", "~Switch", 10);
 		$this->EnableAction("Active");
