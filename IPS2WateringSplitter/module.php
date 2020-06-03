@@ -232,7 +232,7 @@
 	    	$data = json_decode($JSONString);
 	    	$Result = -999;
 	 	switch ($data->Function) {
-		    	// GPIO Kommunikation
+		    	// Maximale Bewässerungszeit
 			case "set_MaxWatering":
 				$MaxWateringArray = array();
 				$MaxWateringArray = unserialize($this->GetBuffer("WateringArray"));
@@ -241,6 +241,12 @@
 				$this->SendDebug("MaxWateringChilds", array_sum($MaxWateringArray), 0);
 				$this->SetBuffer("WateringArray", serialize($MaxWateringArray));
 				$this->SendDebug("WateringArray", serialize($MaxWateringArray), 0);		 
+				break;
+			case "reset_Assocition":
+				$this->ClearProfilAssociations();
+				$ChildArray = Array();
+				$ChildArray = $this->GetChildren();
+				SetValueInteger($this->GetIDForIdent("ActiveChildren"),  count($ChildArray));		 
 				break;
 		}
 	return $Result;
@@ -252,7 +258,7 @@
 		$this->GetWeekplanState($WeekplanID);
 	}
 	    
-	private function GetChildren($SplitterID)
+	private function GetChildren()
 	{
 		$ChildArray = array();
 	    	$InstanceIDs = IPS_GetInstanceList();
