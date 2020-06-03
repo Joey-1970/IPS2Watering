@@ -44,6 +44,7 @@
 		$this->RegisterProfileInteger("IPS2Watering.RadioButton_".$this->InstanceID, "Power", "", "", 0, 2, 0);
 		IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 0, "Aus", "Power", 0xFF0000);
 		IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 1, "Programm", "Power", 0x00FF00);
+		IPS_SetVariableProfileAssociation("IPS2Watering.RadioButton_".$this->InstanceID, 3, "Entwässern", "Power", 0x00FF00);
 		
 		$this->RegisterVariableBoolean("Active", "Aktiv", "~Switch", 10);
 		$this->EnableAction("Active");
@@ -103,18 +104,23 @@
 		$this->SetTimerInterval("WateringTimerSingle", 0);
 		SetValueBoolean($this->GetIDForIdent("ProgramActive"), false);
 		SetValueString($this->GetIDForIdent("ProgramStep"), "---");
+		$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+				"Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
+
 	
 		If ($this->ReadPropertyBoolean("Open") == true) {
+			// Wochenplan auslesem
 			$this->GetWeekplanState($WeekplanID);
 			$this->SetTimerInterval("WeekplanState", (30 * 1000));
+			// Assoziationen löschen und neu aufbauen
 			$this->ClearProfilAssociations();
 			$ChildArray = Array();
-			$ChildArray = $this->GetChildren($this->InstanceID);
+			$ChildArray = $this->GetChildren();
 			SetValueInteger($this->GetIDForIdent("ActiveChildren"),  count($ChildArray));
 			$this->SendDebug("ApplyChanges", serialize($ChildArray), 0);
+			// Maximale Bewässerungszeit einlesen
 			$this->GetChildrenMaxWatering();
-			$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
-							"Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
+			
 			$this->SetStatus(102);
 		}
 		else {
@@ -146,6 +152,12 @@
 			    	  	elseif ($Value == 1) {
 						// Programm
 						$this->StartWateringProgram();
+					}
+					elseif ($Value == 2) {
+						// Entwässerung
+						$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+							"Function"=>"set_State", "InstanceID" => 0, "State"=>true)));
+
 					}
 					elseif (($Value >= 10000) AND ($Value < 100000)) {
 						// bestimmte Instanz
@@ -179,12 +191,12 @@
 				// Kernel ist fertig
 				$this->ClearProfilAssociations();
 				$ChildArray = Array();
-				$ChildArray = $this->GetChildren($this->InstanceID);
+				$ChildArray = $this->GetChildren();
 				SetValueInteger($this->GetIDForIdent("ActiveChildren"),  count($ChildArray));
 				$this->GetChildrenMaxWatering();
 				break;
 			case 10603:
-				// Änderung der Vorlauf-Temperatur
+				// Änderung der Temperatur
 				If ($SenderID == $this->ReadPropertyInteger("TemperatureSensorID")) {
 					$this->SendDebug("MessageSink", "Ausloeser Aenderung Temperatur-Status", 0);
 					$Temperature = GetValueFloat($SenderID);
@@ -242,11 +254,11 @@
 	    
 	private function GetChildren($SplitterID)
 	{
-	    	$ChildArray = array();
+		$ChildArray = array();
 	    	$InstanceIDs = IPS_GetInstanceList();
 	    	foreach($InstanceIDs as $IID)
 		{
-		    	if ((IPS_GetInstance($IID)['ConnectionID'] == $SplitterID) AND (IPS_GetInstance($IID)['InstanceStatus'] == 102)) {
+		    	if ((IPS_GetInstance($IID)['ConnectionID'] == $this->InstanceID) AND (IPS_GetInstance($IID)['InstanceStatus'] == 102)) {
 				$InstanceID = $IID.PHP_EOL;
 				$ChildArray[] = intval($InstanceID);
 				// Assozistion ohne Zeitlimit
