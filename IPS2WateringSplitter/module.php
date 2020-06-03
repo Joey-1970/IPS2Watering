@@ -242,7 +242,7 @@
 				$this->SetBuffer("WateringArray", serialize($MaxWateringArray));
 				$this->SendDebug("WateringArray", serialize($MaxWateringArray), 0);		 
 				break;
-			case "reset_Assocition":
+			case "reset_Associations":
 				$this->ClearProfilAssociations();
 				$ChildArray = Array();
 				$ChildArray = $this->GetChildren();
