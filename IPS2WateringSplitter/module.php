@@ -85,14 +85,14 @@
             	// Diese Zeile nicht löschen
             	parent::ApplyChanges();
 		
+		$this->RegisterMessage($this->InstanceID, 10001); // IPS_KERNELSTARTED
+		
 		// Registrierung für die Änderung des Wochenplans
 		$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
-		$this->RegisterMessage($WeekplanID, 10821);
+		$this->Register//Registrierung für den KernelMessage($WeekplanID, 10821);
 		$this->RegisterMessage($WeekplanID, 10822);
 		$this->RegisterMessage($WeekplanID, 10823);
 		
-		//Registrierung für den Kernel
-		$this->RegisterMessage($this->InstanceID, 10103);
 		// Registrierung für die Änderung des Aktor-Status
 		If ($this->ReadPropertyInteger("TemperatureSensorID") > 0) {
 			$this->RegisterMessage($this->ReadPropertyInteger("TemperatureSensorID"), 10603);
@@ -104,9 +104,10 @@
 		$this->SetTimerInterval("WateringTimerSingle", 0);
 		SetValueBoolean($this->GetIDForIdent("ProgramActive"), false);
 		SetValueString($this->GetIDForIdent("ProgramStep"), "---");
-		$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+		If (IPS_GetKernelRunlevel() == 10103) {	
+			$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
 				"Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
-
+		}
 	
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			// Wochenplan auslesem
@@ -187,13 +188,9 @@
 	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     	{
 		switch ($Message) {
-			case 10103:
-				// Kernel ist fertig
-				$this->ClearProfilAssociations();
-				$ChildArray = Array();
-				$ChildArray = $this->GetChildren();
-				SetValueInteger($this->GetIDForIdent("ActiveChildren"),  count($ChildArray));
-				$this->GetChildrenMaxWatering();
+			case 10001:
+				// IPS_KERNELSTARTED
+				$this->ApplyChanges;
 				break;
 			case 10603:
 				// Änderung der Temperatur
