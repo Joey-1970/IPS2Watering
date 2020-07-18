@@ -49,14 +49,13 @@
             	// Diese Zeile nicht löschen
             	parent::ApplyChanges();
 		
+		$this->RegisterMessage($this->InstanceID, 10001); // IPS_KERNELSTARTED
+		
 		// Registrierung für die Änderung des Aktor-Status
 		If ($this->ReadPropertyInteger("ActuatorID") > 0) {
 			$this->RegisterMessage($this->ReadPropertyInteger("ActuatorID"), 10603);
 		}
-		
-		
-		
-		
+			
 		If (GetValueBoolean($this->GetIDForIdent("Automatic")) == true) {
 			$this->DisableAction("State");
 		}
@@ -66,19 +65,21 @@
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$MaxWatering =  GetValueInteger($this->GetIDForIdent("MaxWatering"));
-			$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
+			If (IPS_GetKernelRunlevel() == 10103) {
+				$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
 										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $MaxWatering )));
 
-			$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
+				$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
 										  "Function" => "reset_Associations", "InstanceID" => $this->InstanceID )));
-
+			}
 			$this->SetStatus(102);
 		}
 		else {
 			$MaxWatering = 0;
-			$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
+			If (IPS_GetKernelRunlevel() == 10103) {
+				$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
 										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $MaxWatering )));
-
+			}
 			$this->SetStatus(104);
 		}
         }
@@ -131,6 +132,11 @@
 					$this->SendDebug("MessageSink", "Ausloeser Aenderung Aktor-Status", 0);
 					
 				}
+				break;
+			case 10001:
+				// IPS_KERNELSTARTED
+				$this->ApplyChanges;
+				break;
 			
 		}
     	}        
