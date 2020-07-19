@@ -6,7 +6,9 @@
         public function Create() {
             	// Diese Zeile nicht löschen.
             	parent::Create();
-            	$this->ConnectParent("{A229AF9F-E57D-A522-D69A-AFB01BB8109D}");
+            	$this->RegisterMessage(0, IPS_KERNELMESSAGE);
+		
+		$this->ConnectParent("{A229AF9F-E57D-A522-D69A-AFB01BB8109D}");
 		$this->RegisterPropertyBoolean("Open", false);
             	$this->RegisterPropertyInteger("ActuatorID", 0);
             	$this->RegisterPropertyInteger("SensorID", 0);
@@ -65,7 +67,7 @@
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$MaxWatering =  GetValueInteger($this->GetIDForIdent("MaxWatering"));
-			If (IPS_GetKernelRunlevel() == 10103) {
+			if (IPS_GetKernelRunlevel() == KR_READY) {
 				$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
 										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $MaxWatering )));
 
@@ -76,7 +78,7 @@
 		}
 		else {
 			$MaxWatering = 0;
-			If (IPS_GetKernelRunlevel() == 10103) {
+			if (IPS_GetKernelRunlevel() == KR_READY) {
 				$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
 										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $MaxWatering )));
 			}
