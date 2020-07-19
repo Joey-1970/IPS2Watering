@@ -109,16 +109,13 @@
 				"Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
 		}
 	
-		If ($this->ReadPropertyBoolean("Open") == true) {
+		If (($this->ReadPropertyBoolean("Open") == true) AND (IPS_GetKernelRunlevel() == KR_READY)) {
 			// Wochenplan auslesem
 			$this->GetWeekplanState($WeekplanID);
 			$this->SetTimerInterval("WeekplanState", (30 * 1000));
 			// Assoziationen löschen und neu aufbauen
-			$this->ClearProfilAssociations();
-			$ChildArray = Array();
-			$ChildArray = $this->GetChildren();
-			SetValueInteger($this->GetIDForIdent("ActiveChildren"),  count($ChildArray));
-			$this->SendDebug("ApplyChanges", serialize($ChildArray), 0);
+			$this->GetChildren();
+			
 			// Maximale Bewässerungszeit einlesen
 			$this->GetChildrenMaxWatering();
 			
@@ -240,10 +237,7 @@
 				$this->SendDebug("WateringArray", serialize($MaxWateringArray), 0);		 
 				break;
 			case "reset_Associations":
-				$this->ClearProfilAssociations();
-				$ChildArray = Array();
-				$ChildArray = $this->GetChildren();
-				SetValueInteger($this->GetIDForIdent("ActiveChildren"),  count($ChildArray));		 
+				$this->GetChildren();		 
 				break;
 		}
 	return $Result;
@@ -257,8 +251,10 @@
 	    
 	private function GetChildren()
 	{
+		$this->ClearProfilAssociations();
 		$ChildArray = array();
-	    	$InstanceIDs = IPS_GetInstanceList();
+	    	
+		$InstanceIDs = IPS_GetInstanceList();
 	    	foreach($InstanceIDs as $IID)
 		{
 		    	if ((IPS_GetInstance($IID)['ConnectionID'] == $this->InstanceID) AND (IPS_GetInstance($IID)['InstanceStatus'] == 102)) {
@@ -276,6 +272,8 @@
 				$this->RegisterMessage($InstanceID, 10402); // Obejekt wurde entfernt
 		    	}
 		}
+		SetValueInteger($this->GetIDForIdent("ActiveChildren"),  count($ChildArray));
+		$this->SendDebug("ApplyChanges", serialize($ChildArray), 0);
 		
 	return  $ChildArray;
 	}
