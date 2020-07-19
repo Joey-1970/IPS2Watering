@@ -16,7 +16,9 @@
         public function Create() {
             	// Diese Zeile nicht löschen.
             	parent::Create();
-            	$this->RegisterPropertyBoolean("Open", false);
+            	$this->RegisterMessage(0, IPS_KERNELMESSAGE);
+		
+		$this->RegisterPropertyBoolean("Open", false);
             	$this->RegisterPropertyInteger("TemperatureSensorID", 0);
 		$this->RegisterPropertyInteger("MinTemperature", 10);
 		
@@ -85,8 +87,6 @@
             	// Diese Zeile nicht löschen
             	parent::ApplyChanges();
 		
-		$this->RegisterMessage($this->InstanceID, 10001); // IPS_KERNELSTARTED
-		
 		// Registrierung für die Änderung des Wochenplans
 		$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
 		$this->Register//Registrierung für den KernelMessage($WeekplanID, 10821);
@@ -104,7 +104,7 @@
 		$this->SetTimerInterval("WateringTimerSingle", 0);
 		SetValueBoolean($this->GetIDForIdent("ProgramActive"), false);
 		SetValueString($this->GetIDForIdent("ProgramStep"), "---");
-		If (IPS_GetKernelRunlevel() == 10103) {	
+		if (IPS_GetKernelRunlevel() == KR_READY) {
 			$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
 				"Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
 		}
