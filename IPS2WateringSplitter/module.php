@@ -22,8 +22,6 @@
             	$this->RegisterPropertyInteger("TemperatureSensorID", 0);
 		$this->RegisterPropertyInteger("MinTemperature", 10);
 		
-		
-		
 		$this->RegisterEvent("Wochenplan", "IPS2Watering_Event_".$this->InstanceID, 2, $this->InstanceID, 110);
 		// Anlegen der Daten für den Wochenplan
 		for ($i = 0; $i <= 6; $i++) {
@@ -185,7 +183,7 @@
 	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     	{
 		switch ($Message) {
-			case 10001:
+			case 10100:
 				// IPS_KERNELSTARTED
 				$this->ApplyChanges();
 				break;
