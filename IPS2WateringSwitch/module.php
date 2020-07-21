@@ -135,7 +135,7 @@
 					
 				}
 				break;
-			case 10001:
+			case 10100:
 				// IPS_KERNELSTARTED
 				$this->ApplyChanges();
 				break;
