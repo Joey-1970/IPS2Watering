@@ -50,9 +50,6 @@
         public function ApplyChanges() {
             	// Diese Zeile nicht löschen
             	parent::ApplyChanges();
-		
-		$this->RegisterMessage($this->InstanceID, 10001); // IPS_KERNELSTARTED
-		
 		// Registrierung für die Änderung des Aktor-Status
 		If ($this->ReadPropertyInteger("ActuatorID") > 0) {
 			$this->RegisterMessage($this->ReadPropertyInteger("ActuatorID"), 10603);
