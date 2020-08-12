@@ -159,12 +159,16 @@
 										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $MaxWatering )));
 				break;
 			case "set_State":
-				If ($this->ReadPropertyInteger("ActuatorID") > 0) {
+				If ($this->ReadPropertyInteger("ActuatorID") > 0) { // Normale Aktion oder Programm
 					If ($data->InstanceID == $this->InstanceID) {
 						SetValueBoolean($this->GetIDForIdent("State"),  boolval($data->State));
 						RequestAction($this->ReadPropertyInteger("ActuatorID"), boolval($data->State));
 					}
-					else {
+					elseif ($data->InstanceID == 0) { // Entwässerung bzw. alles aus
+						SetValueBoolean($this->GetIDForIdent("State"),  boolval($data->State));
+						RequestAction($this->ReadPropertyInteger("ActuatorID"), boolval($data->State));
+					}
+					else { // Schließen wenn andere angesprochen werden
 						SetValueBoolean($this->GetIDForIdent("State"), false);
 						RequestAction($this->ReadPropertyInteger("ActuatorID"), false);
 					}
