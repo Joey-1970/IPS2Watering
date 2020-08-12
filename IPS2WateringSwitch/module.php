@@ -17,7 +17,8 @@
 		
 		$this->RegisterVariableBoolean("Automatic", "Automatik", "~Switch", 10);
 		$this->EnableAction("Automatic");
-            	$this->RegisterVariableBoolean("State", "Status", "~Switch", 20);	
+            	$this->RegisterVariableBoolean("State", "Status", "~Switch", 20);
+		$this->EnableAction("State");
 		$this->RegisterVariableInteger("MaxWatering", "Maximale Bewässerungszeit (min)", "IPS2Watering.MaxWatering", 30);
 		$this->EnableAction("MaxWatering");
 		
@@ -33,14 +34,14 @@
 
             	$arrayElements = array(); 
             	$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv"); 
-            	$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-            	$arrayElements[] = array("type" => "Label", "label" => "Ventil-Aktor-Variable (Boolean)");
+            	$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");
+            	$arrayElements[] = array("type" => "Label", "caption" => "Ventil-Aktor-Variable (Boolean)");
             	$arrayElements[] = array("type" => "SelectVariable", "name" => "ActuatorID", "caption" => "Aktor"); 
-            	$arrayElements[] = array("type" => "Label", "label" => "Bodenfeuchtigkeits-Sensor-Variable (Float)");
+            	$arrayElements[] = array("type" => "Label", "caption" => "Bodenfeuchtigkeits-Sensor-Variable (Float)");
             	$arrayElements[] = array("type" => "SelectVariable", "name" => "SensorID", "caption" => "Aktor"); 
-            	$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+            	$arrayElements[] = array("type" => "Label", "caption" => "_____________________________________________________________________________________________________");
 		$arrayActions = array(); 
-		$arrayActions[] = array("type" => "Label", "label" => "Test Center"); 
+		$arrayActions[] = array("type" => "Label", "caption" => "Test Center"); 
 		$arrayActions[] = array("type" => "TestCenter", "name" => "TestCenter");
 		
  		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements, "actions" => $arrayActions)); 	 	 
