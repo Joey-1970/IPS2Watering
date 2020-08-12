@@ -93,10 +93,12 @@
 			    If ($this->ReadPropertyBoolean("Open") == true) {
 				   SetValueBoolean($this->GetIDForIdent("Automatic"),  $Value);
 				   If ($Value == true) {
-					$this->DisableAction("State");
+				   	   $this->SendDebug("RequestAction", "State wird Disabled", 0);
+					   $this->DisableAction("State");
 				   }
 				   else {
-					$this->EnableAction("State");
+					   $this->SendDebug("RequestAction", "State wird Enabled", 0);
+					   $this->EnableAction("State");
 				   }
 			    }
 			    break;
