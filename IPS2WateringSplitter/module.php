@@ -133,22 +133,21 @@
   		switch($Ident) {
 			case "Active":
 			    	If ($this->ReadPropertyBoolean("Open") == true) {
-				  	SetValueBoolean($this->GetIDForIdent($Ident), $Value);
+				  	$this->SetValue($Ident, $Value);
 			    	}
 			    	break;
 			case "RadioButton":
 			    	If ($this->ReadPropertyBoolean("Open") == true) {
-				  	SetValueInteger($this->GetIDForIdent($Ident), $Value);
-				  	If ($Value == 0) {
-					 	// Aus
-						$this->SetBuffer("WateringProgramm", 0);
-						SetValueBoolean($this->GetIDForIdent("ProgramActive"), false);
-						SetValueString($this->GetIDForIdent("ProgramStep"), "---");
-						$this->SetTimerInterval("WateringTimer", 0);
-						$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
+				  	$this->SetValue($Ident, $Value);
+				  	// Zunächst erst einmal alles zurücksetzen
+					$this->SetBuffer("WateringProgramm", 0);
+					SetValueBoolean($this->GetIDForIdent("ProgramActive"), false);
+					SetValueString($this->GetIDForIdent("ProgramStep"), "---");
+					$this->SetTimerInterval("WateringTimer", 0);
+					$this->SendDataToChildren(json_encode(Array("DataID" => "{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}", 
 											    "Function"=>"set_State", "InstanceID" => 0, "State"=>false)));
-				  	}
-			    	  	elseif ($Value == 1) {
+					
+			    	  	If ($Value == 1) {
 						// Programm
 						$this->StartWateringProgram();
 					}
