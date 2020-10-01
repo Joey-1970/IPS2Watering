@@ -16,7 +16,7 @@
         public function Create() {
             	// Diese Zeile nicht löschen.
             	parent::Create();
-            	$this->RegisterMessage(0, IPS_KERNELMESSAGE);
+            	$this->RegisterMessage(0, IPS_KERNELSTARTED);
 		
 		$this->RegisterPropertyBoolean("Open", false);
             	$this->RegisterPropertyInteger("TemperatureSensorID", 0);
@@ -185,7 +185,7 @@
 	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     	{
 		switch ($Message) {
-			case 10100:
+			case 10001:
 				// IPS_KERNELSTARTED
 				$this->ApplyChanges();
 				break;
