@@ -6,7 +6,7 @@
         public function Create() {
             	// Diese Zeile nicht löschen.
             	parent::Create();
-            	$this->RegisterMessage(0, IPS_KERNELMESSAGE);
+            	$this->RegisterMessage(0, IPS_KERNELSTARTED);
 		
 		$this->ConnectParent("{A229AF9F-E57D-A522-D69A-AFB01BB8109D}");
 		$this->RegisterPropertyBoolean("Open", false);
@@ -135,7 +135,7 @@
 					
 				}
 				break;
-			case 10100:
+			case 10001:
 				// IPS_KERNELSTARTED
 				$this->ApplyChanges();
 				break;
