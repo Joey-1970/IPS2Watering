@@ -27,8 +27,8 @@
 		for ($i = 0; $i <= 6; $i++) {
 			IPS_SetEventScheduleGroup($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), $i, pow(2, $i));
 		}
-		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 1, "Freigabe", 0x00FF00, "WateringSwitch_SetState(\$_IPS['TARGET'], 1);");	
-		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 2, "Sperrzeit", 0xFF0000, "WateringSwitch_SetState(\$_IPS['TARGET'], 1);");	
+		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 1, "Freigabe", 0x00FF00, "WateringSwitch_TimerEventGetWeekplanState(\$_IPS['TARGET'], 1);");	
+		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 2, "Sperrzeit", 0xFF0000, "WateringSwitch_TimerEventGetWeekplanState(\$_IPS['TARGET'], 1);");	
 
 		$this->RegisterTimer("WeekplanState", 0, 'WateringSplitter_TimerEventGetWeekplanState($_IPS["TARGET"]);'); 
 		
