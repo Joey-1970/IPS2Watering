@@ -10,5 +10,5 @@
   "parentRequirements": ["{86AFC5C5-7881-11BF-A513-46C91C174E10}"],
   "childRequirements": [],
   "implemented": ["{3AB3B462-743D-EA60-16E1-6EECEDD9BF16}"],
-  "prefix": "WateringSwitch"
+  "prefix": "IPS2WateringSwitch"
 }
