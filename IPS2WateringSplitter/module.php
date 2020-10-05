@@ -1,18 +1,8 @@
 <?
     // Klassendefinition
     class IPS2WateringSplitter extends IPSModule {
- 	 
-	public function Destroy() 
-	{
-		//Never delete this line!
-		parent::Destroy();
-		$this->SetTimerInterval("WeekplanState", 0);
-		$this->SetTimerInterval("WateringTimer", 0);
-		$this->SetTimerInterval("WateringTimerSingle", 0);
-	}    
-	    
-	    
-        // Überschreibt die interne IPS_Create($id) Funktion
+ 	
+	// Überschreibt die interne IPS_Create($id) Funktion
         public function Create() {
             	// Diese Zeile nicht löschen.
             	parent::Create();
@@ -30,11 +20,11 @@
 		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 1, "Freigabe", 0x00FF00, "IPS2WateringSplitter_TimerEventGetWeekplanState(\$_IPS['TARGET']);");	
 		IPS_SetEventScheduleAction($this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID), 2, "Sperrzeit", 0xFF0000, "IPS2WateringSplitter_TimerEventGetWeekplanState(\$_IPS['TARGET']);");	
 
-		$this->RegisterTimer("WeekplanState", 0, 'WateringSplitter_TimerEventGetWeekplanState($_IPS["TARGET"]);'); 
+		$this->RegisterTimer("WeekplanState", 0, 'IPS2WateringSplitter_TimerEventGetWeekplanState($_IPS["TARGET"]);'); 
 		
-		$this->RegisterTimer("WateringTimer", 0, 'WateringSplitter_WateringTimerEvent($_IPS["TARGET"]);'); 
+		$this->RegisterTimer("WateringTimer", 0, 'IPS2WateringSplitter_WateringTimerEvent($_IPS["TARGET"]);'); 
 		
-		$this->RegisterTimer("WateringTimerSingle", 0, 'WateringSplitter_WateringTimerEventSingle($_IPS["TARGET"]);');
+		$this->RegisterTimer("WateringTimerSingle", 0, 'IPS2WateringSplitter_WateringTimerEventSingle($_IPS["TARGET"]);');
 		
             	$this->RegisterProfileInteger("IPS2Watering.WeekplanState", "Information", "", "", 0, 2, 1);
 		IPS_SetVariableProfileAssociation("IPS2Watering.WeekplanState", 0, "Undefiniert", "Warning", 0xFF0000);
