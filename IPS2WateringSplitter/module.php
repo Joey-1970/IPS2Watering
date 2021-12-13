@@ -80,9 +80,9 @@
 		
 		// Registrierung für die Änderung des Wochenplans
 		$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
-		$this->RegisterMessage($WeekplanID, 10821);
-		$this->RegisterMessage($WeekplanID, 10822);
-		$this->RegisterMessage($WeekplanID, 10823);
+		$this->RegisterMessage($WeekplanID, EM_ADDSCHEDULEGROUPPOINT);
+		$this->RegisterMessage($WeekplanID, EM_REMOVESCHEDULEGROUPPOINT);
+		$this->RegisterMessage($WeekplanID, EM_CHANGESCHEDULEGROUPPOINT);
 		
 		// Registrierung für die Änderung des Aktor-Status
 		If ($this->ReadPropertyInteger("TemperatureSensorID") > 0) {
@@ -175,11 +175,11 @@
 	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     	{
 		switch ($Message) {
-			case 10001:
+			case IPS_KERNELSTARTED:
 				// IPS_KERNELSTARTED
 				$this->ApplyChanges();
 				break;
-			case 10603:
+			case VM_UPDATE:
 				// Änderung der Temperatur
 				If ($SenderID == $this->ReadPropertyInteger("TemperatureSensorID")) {
 					$this->SendDebug("MessageSink", "Ausloeser Aenderung Temperatur-Status", 0);
@@ -189,19 +189,19 @@
 					}
 				}
 				break;
-			case 10821:
+			case EM_ADDSCHEDULEGROUPPOINT:
 				// Änderung des Wochenplans
 				$this->SendDebug("MessageSink", "Ausloeser Aenderung Wochenplan", 0);
 				$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
 				$this->GetWeekplanState($WeekplanID);
 				break;
-			case 10822:
+			case EM_REMOVESCHEDULEGROUPPOINT:
 				// Änderung des Wochenplans
 				$this->SendDebug("MessageSink", "Ausloeser Aenderung Wochenplan", 0);
 				$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
 				$this->GetWeekplanState($WeekplanID);
 				break;
-			case 10823:
+			case EM_CHANGESCHEDULEGROUPPOINT:
 				// Änderung des Wochenplans
 				$this->SendDebug("MessageSink", "Ausloeser Aenderung Wochenplan", 0);
 				$WeekplanID = $this->GetIDForIdent("IPS2Watering_Event_".$this->InstanceID);
