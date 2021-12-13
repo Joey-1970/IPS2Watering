@@ -53,7 +53,7 @@
             	parent::ApplyChanges();
 		// Registrierung für die Änderung des Aktor-Status
 		If ($this->ReadPropertyInteger("ActuatorID") > 0) {
-			$this->RegisterMessage($this->ReadPropertyInteger("ActuatorID"), 10603);
+			$this->RegisterMessage($this->ReadPropertyInteger("ActuatorID"), VM_UPDATE);
 		}
 			
 		If (GetValueBoolean($this->GetIDForIdent("Automatic")) == true) {
@@ -128,14 +128,14 @@
 	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     	{
 		switch ($Message) {
-			case 10603:
+			case VM_UPDATE:
 				// Änderung der Vorlauf-Temperatur
 				If ($SenderID == $this->ReadPropertyInteger("ActuatorID")) {
 					$this->SendDebug("MessageSink", "Ausloeser Aenderung Aktor-Status", 0);
 					
 				}
 				break;
-			case 10001:
+			case IPS_KERNELSTARTED:
 				// IPS_KERNELSTARTED
 				$this->ApplyChanges();
 				break;
