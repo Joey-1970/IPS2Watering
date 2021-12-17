@@ -72,7 +72,9 @@
 				$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
 										  "Function" => "reset_Associations", "InstanceID" => $this->InstanceID )));
 			}
-			$this->SetStatus(102);
+			If ($this->GetStatus() <> 102) {
+				$this->SetStatus(102);
+			}
 		}
 		else {
 			$MaxWatering = 0;
@@ -80,7 +82,9 @@
 				$this->SendDataToParent(json_encode(Array("DataID"=> "{86AFC5C5-7881-11BF-A513-46C91C174E10}", 
 										  "Function" => "set_MaxWatering", "InstanceID" => $this->InstanceID, "MaxWatering" => $MaxWatering )));
 			}
-			$this->SetStatus(104);
+			If ($this->GetStatus() <> 104) {
+				$this->SetStatus(104);
+			}
 		}
         }
  
