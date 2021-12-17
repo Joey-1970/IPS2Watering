@@ -110,11 +110,15 @@
 			// Maximale Bewässerungszeit einlesen
 			$this->GetChildrenMaxWatering();
 			
-			$this->SetStatus(102);
+			If ($this->GetStatus() <> 102) {
+				$this->SetStatus(102);
+			}
 		}
 		else {
 			$this->SetTimerInterval("WeekplanState", 0);
-			$this->SetStatus(104);
+			If ($this->GetStatus() <> 104) {
+				$this->SetStatus(104);
+			}
 		}
         }
  
