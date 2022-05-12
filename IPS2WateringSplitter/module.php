@@ -46,6 +46,7 @@
 		$this->EnableAction("RadioButton");
 		$this->RegisterVariableBoolean("ProgramActive", "Programm aktiv", "~Switch", 70);
 		$this->RegisterVariableString("ProgramStep", "Programm Schritt", "", 80);
+		$this->RegisterVariableString("ProgramStepTime", "Programm Schritt Zeit", "", 90);
 		$this->RegisterVariableInteger("WeekplanState", "Wochenplanstatus", "IPS2Watering.WeekplanState", 100);
 		$this->RegisterVariableInteger("ActiveChildren", "Aktive Wasserkreise", "", 110);
 		$this->RegisterVariableInteger("StepCounter", "Schrittzähler", "", 120);
